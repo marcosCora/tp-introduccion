@@ -1,0 +1,55 @@
+
+CONSIGNAS
+
+1.	Suponga que un individuo desea invertir su capital en un banco y desea saber cuánto dinero ganara 
+después de un mes si el banco paga a razón de 2% mensual. 
+2.	Una tienda ofrece un descuento del 15% sobre el total de la compra y un cliente desea saber cuánto 
+deberá pagar finalmente por su compra. 
+3.	Un maestro desea saber qué porcentaje de hombres y que porcentaje de mujeres hay en un grupo de estudiantes. 
+
+
+EJERCICIO 1
+ int main()
+{
+    int num1;
+    float resultado1 , aumento;
+    printf("ingrese su capital a inveertir\n");
+    scanf("%D" , &num1);
+    resultado1= (num1*2);
+    aumento= resultado1/100;
+    printf("en cada mes se le ira aumentando: %f" , aumento);
+
+
+    return 0;
+}
+ EJERCICIO 2
+ int main()
+{
+    int precio;
+    float resultado, subtotal;
+    printf("ingrese el total de su compra\n");
+    scanf("%d", &precio);
+    subtotal= (precio*15)/100;
+    resultado= precio-subtotal;
+    printf("el total de su compra es de: %f", resultado);
+
+    return 0;
+}
+ EJERCICIO 3
+ int main()
+{
+    int hombres, mujeres, total;
+    float resultadosh, resultadom;
+    printf("ingrese la cantidad de mujeres que hay\n");
+    scanf("%d" , &mujeres);
+    printf("ingrese la cantidad de hombres que hay\n");
+    scanf("%d" , &hombres);
+    total= hombres+mujeres;
+    resultadosh= (hombres*100)/total;
+    resultadom= (mujeres*100)/total;
+    printf("el porcentaje de mujeres es de: %f", resultadom);
+    printf(" y el de hombres es de: %f" , resultadosh);
+}
+ 
+ 
+ 
