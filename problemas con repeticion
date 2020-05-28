@@ -1,0 +1,129 @@
+1.	Calcular el promedio de un alumno que tiene 7 calificaciones en la materia de Programación 1 
+2.	Leer 10 números y obtener su cubo y su cuarta. 
+3.	Leer 10 números e imprimir solamente los números positivos 
+4.	Leer 15 números negativos y convertirlos a positivos e imprimir dichos números. 
+5.	Suponga que se tiene un conjunto de calificaciones de un grupo de 40 alumnos. 
+Realizar un algoritmo para calcular la calificación promedio y la calificación más baja de todo el grupo. 
+6.	Calcular e imprimir la tabla de multiplicar de un número cualquiera. Imprimir el multiplicando, el multiplicador y el producto. 
+
+EJERCICIO 1
+const int contNotas= 7;
+int main()
+{
+    int notas=0, cont=0, totalNotas=0;
+    float promedio;
+
+    while (cont<contNotas){
+        cont++;
+        printf("ingrese sus notas:\n");
+        scanf("%d" , &notas);
+        totalNotas= totalNotas+notas;
+    }
+    promedio= (float) totalNotas/7;
+    printf("su promedio es de: %.2f", promedio);
+}
+EJERCICIO 2
+int main()
+{
+  int  cont=0, num1, cubo , cuarta;
+
+  for ( cont=0; cont<10; cont++){
+  printf("\ningrese un numero:\n ");
+
+  scanf("%d", &num1);
+
+  cubo= num1*num1*num1;
+
+  cuarta= num1*num1*num1*num1;
+
+  printf("el cubo y la cuarte del numero %d son %d y %d" , num1, cubo, cuarta);
+
+
+  }
+
+return 0;
+}
+EJERCICIO 3
+const int maximo=10;
+int main()
+{
+    int num, cont=0 ;
+
+    while(cont<maximo){
+        printf("\ningrese los numeros necesarios\n");
+        scanf("%d", &num);
+        cont++;
+        if (num>0)
+        printf("este numero es positivo: %d" , num);
+
+  }
+
+
+    return 0;
+
+}
+
+
+EJERCICIO 4
+int main()
+{
+   const int maximo=15;
+   int num1, cont=0;
+
+   while (cont<maximo){
+    cont++;
+    printf("\ningrese un numero negativo\n");
+    scanf("%d", &num1);
+    printf("el numero que escribio es %d en positivo", abs(num1));
+   }
+   return 0;
+}
+
+EJERCICIO 5
+INCOMPLETO
+
+const int alumnos= 5;
+int main()
+{
+    int notaMenor, notaMayor, nota, cont=0, totalNotas;
+    float promedio;
+    printf("ingrese la nota 1\n", cont+1 );
+    scanf("%d", &nota);
+    notaMayor= nota;
+    notaMenor= nota;
+    totalNotas= totalNotas+nota;
+    cont++
+    for(cont=1; alumnos<cont; cont++){
+        printf("ingrese las notas\n");
+        scanf("%d", &nota);
+        totalNotas= nota+totalNotas;
+
+        if (nota<notaMenor){
+            notaMenor= nota;
+
+        }else{
+        if (nota>notaMayor){
+            notaMayor= nota;
+
+        }
+        }
+
+    }
+}
+
+EJERCICIO 6
+const int maximo=10;
+int main()
+{
+    int num1, cont=0,  multiplicador=1, multiplicando, producto;
+    printf("\n ingrese un numero a multiplicar:\n ");
+    scanf("%d", &num1);
+
+     for (cont=1; cont<=maximo; cont++) {
+          producto= num1*multiplicador;
+          printf("\n %d*%d=%d", num1, multiplicador, producto);
+          multiplicador++;
+}
+    return 0;
+
+}
