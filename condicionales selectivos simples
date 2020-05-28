@@ -1,0 +1,104 @@
+1.	Determinar si un alumno aprueba a reprueba un curso, sabiendo que aprobara si su promedio de tres calificaciones 
+es mayor o igual a 7; reprueba en caso contrario. 
+2.	En un almacén se hace un 20% de descuento a los clientes cuya compra supere los $5000 ¿Cuál será la cantidad que 
+pagara una persona por su compra? 
+3.	Un obrero necesita calcular su salario semanal, el cual se obtiene de la sig. manera: Si trabaja 40 horas o menos 
+se le paga $300 por hora Si trabaja más de 40 horas se le paga $300 por cada una de las primeras 40 horas y $400 por cada hora extra. 
+4.	Desarrolle un algoritmo que lea dos números y los imprima en forma ascendente 
+5.	Hacer un algoritmo que calcule el total a pagar por la compra de camisas. Si se compran tres camisas o más se aplica 
+un descuento del 20% sobre el total de la compra y si son menos de tres camisas un descuento del 10% 
+
+EJERCICIO 1
+int main()
+{
+    float nota1, nota2, nota3, resultado;
+    printf("ingrese el valor de su primer nota\n");
+    scanf("%f" , &nota1);
+    printf("ingrese el valor de su segunda nota\n");
+    scanf("%f" , &nota2);
+    printf("ingrese el valor de su tercer nota\n");
+    scanf("%f" , &nota3);
+    resultado= (nota1+nota2+nota3)/3;
+    if (resultado>=6){
+        printf("el alumno a aprobado la materia con una nota de: %f" , resultado);
+        }else{
+            printf("el alumno reprobo con una nota de: %f" , resultado);
+        }
+        return 0;
+}
+EJERCICIO 2
+int main()
+{
+    float precio1, total, precio2;
+    printf("ingrese el valor de su compra\n");
+    scanf("%f", &precio1);
+    if (precio1>=5000)
+    {
+        total= (precio1*20)/100;
+        precio2= total-precio1;
+        printf("el precio a pagar es de: %f", precio2);
+    }
+    else
+    {
+        printf("el precio de la compra queda igual ya que no supero el monto correspondiente");
+    }
+    return 0;
+}
+EJERCICIO 3
+int main()
+{
+  float horas, sueldo, horasextras, sueldoextra, totalextra;
+  printf("ingrese las horas trabajadas esta semana\n");
+
+  scanf("%f", &horas);
+
+  if (horas<=40){
+
+    sueldo= horas*300;
+    printf("el sueldo de esta semana es de: %f", sueldo);
+
+  } else{
+     horasextras= horas-40;
+     sueldo= 40*300;
+     sueldoextra= (horasextras*400);
+     totalextra= sueldo+sueldoextra;
+     printf("el sueldo de esta semana es de: %f", totalextra);
+  }
+     }
+EJERCICIO 4
+int main()
+{
+  int num1, num2;
+  printf("ingrese dos numeros\n");
+  scanf("%d", &num1);
+  scanf("%d", &num2);
+  if (num1<num2){
+    printf("%d", num1);
+    printf(", %d", num2);
+  }
+      else{
+      printf("%d", num2);
+      printf(", %d", num1);
+  }
+   }
+EJERCICIO 5
+int main()
+{
+    float camisas, total, descuento1, descuento2, subtotal1, subtotal2;
+    printf("ingrese la cantidad de camisas compradas\n");
+    scanf("%f", &camisas);
+    printf("ingrese el total gastado\n");
+    scanf("%f", &total);
+    if (camisas>=3)
+    {
+        subtotal1= (total*20)/100;
+        descuento1= total-subtotal1;
+        printf("el precio final es de: %f", descuento1);
+    }
+    else
+    {
+        subtotal2= (total*10)/100;
+        descuento2= total-subtotal2;
+        printf("el precio final es de: %f", descuento2);
+    }
+}
