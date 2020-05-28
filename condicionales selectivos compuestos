@@ -1,0 +1,43 @@
+1.	Leer 2 números; si son iguales que los multiplique, si el primero es mayor que el segundo que los reste y si no que los sume. 
+2.	Leer tres números diferentes e imprimir el número mayor de los tres. 
+
+EJERCICIO 1
+int main()
+{
+    int num, num1, resultado1, resultado2, resultado3;
+    printf("ingrese dos numeros\n");
+    scanf("%d", &num);
+    scanf("%d", &num1);
+
+    if (num==num1){
+        resultado1= num1*num;
+        printf("el resultado es: %d", resultado1);
+    } if (num>num1){
+          resultado2= num-num1;
+          printf("el resultado es: %d", resultado2);}
+           else {
+                resultado3= num+num1;
+           printf("el resultado es: %d", resultado3);
+
+    }
+    }
+EJERCICIO 2
+int main()
+{
+    int num1, num2, num3;
+    printf("ingrese 3 numeros diferentes:\n");
+    scanf ("%d", &num1);
+    scanf ("%d", &num2);
+    scanf ("%d", &num3);
+
+    if (num1>num2 && num1>num3){
+        printf("el numero mayor es: %d\n", num1);
+
+    } if (num2>num1 && num2>num3){
+         printf("el numero mayor es: %d", num2);
+
+    } if (num3>num1 && num3>num2) {
+       printf("el numero mayor es: %d", num3);
+    }
+
+    }
