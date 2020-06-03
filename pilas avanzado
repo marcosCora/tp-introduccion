@@ -1,0 +1,644 @@
+PREGUNTAS
+
+1.	Sumar los elementos de una pila (usar variables)
+2.	Contar los elementos de una pila (usar variables) 
+3.	Calcular el promedio de los valores de una pila (usar variables) 
+4.	Encontrar el menor elemento de una pila y guardarlo en otra. (sin variables, solo pilas) 
+5.	Insertar un elemento en una pila ordenada de menor (tope) a mayor (base) de forma tal que se conserve el orden. 
+(sin variables, solo pilas) 
+6.	Usando lo resuelto en el ejercicio 4, pasar los elementos de una pila a otra de forma tal que la segunda pila quede 
+ordenada de mayor (tope) a menor (base). Esto se llama método de ordenación por selección. 
+7.	Determinar si un elemento buscado está dentro de una pila. Al encontrarlo, finalizar la búsqueda.
+8.	Eliminar un elemento de una pila. El eliminarlo, finalizar el recorrido y dejar el resto en el mismo orden.
+9.	Verificar si una pila DADA es capicúa. 
+10.	Dadas dos pilas A y B que simulan conjuntos (cada conjunto no tiene elementos repetidos sobre sí mismo), realizar un 
+programa que calcule en la pila C la operación de unión. 
+11.	Intercalar dos pilas ordenadas en forma creciente (ORDENADA1 y ORDENADA2) dejando el resultado en una pila también ordenada 
+en forma creciente (ORDENADAFINAL). 
+12.	Dada la pila ORIGEN ordenarla en forma ascendente por método de inserción dejando el resultado en la pila ORIGEN. Para este 
+ejercicio usar lo aprendido para el ejercicio 5. 
+13.	Suponer un juego de cartas en el que en cada mano se reparten dos cartas por jugador. Un jugador gana la mano cuando la suma 
+de sus cartas es mayor que las del contrario y al hacerlo coloca todas las cartas (las de él y las de su rival) en su pila de puntos. 
+En caso de empate (y para simplificar) siempre gana el jugador1. Simular la ejecución del juego de tal manera que dada una pila MAZO
+(con un número de elementos múltiplo de cuatro) distribuya las cartas en las pilas PUNTOSJUG1 y PUNTOSJUG2 como si estos hubieran 
+jugado. Utilizar las pilas auxiliares que crea conveniente. 
+
+
+EJERCICIO 1
+int main()
+{
+    char continuar='p';
+    int datos;
+    int cont=0;
+    Pila a, aux;
+    inicpila(&a);
+    inicpila(&aux);
+
+    printf("ingrese los datos de pila A\n");
+
+    do{
+        scanf("%d", &datos);
+        apilar(&a, datos);
+        printf("ingrese 'p' para continuar ingresando datos\n");
+        fflush(stdin);
+        scanf("%c", &continuar);
+        printf("ingrese otro dato:\n");
+    } while(continuar=='p');
+
+    printf("los valores de pila A son:");
+    mostrar(&a);
+
+    while (!pilavacia(&a)){
+        cont= tope(&a)+cont;
+        apilar(&aux, desapilar(&a));
+    }
+    while(!pilavacia(&aux)){
+        apilar(&a, desapilar(&aux));
+    }
+
+    printf("los elementos de pila A sumados  son: %d", cont);
+
+
+
+    return 0;
+}
+EJERCICIO 2
+int main()
+{
+    Pila a, aux;
+    char continuar='p';
+    int cont=0;
+
+    inicpila(&a);
+    inicpila(&aux);
+
+    printf("ingrese los datos de la pila A:\n");
+
+    do {
+        leer(&a);
+        printf("ingrese 'p' para continuar:\n");
+        fflush(stdin);
+        scanf("%c", &continuar);
+    }while(continuar=='p');
+    system("cls");
+
+    printf("los elementos de pila A son:\n");
+    mostrar(&a);
+
+    while (!pilavacia(&a)){
+        cont++;
+        apilar(&aux, desapilar(&a));
+    }
+    while (!pilavacia(&aux)){
+        apilar(&a, desapilar(&aux));
+    }
+    printf("la cantidad de elementos que tiene esta pila son %d\n", cont);
+
+    return 0;
+}
+
+EJERCICIO 3
+int main()
+{
+    char continuar='p';
+    int cont=0;
+    int cont2=0;
+    float promedio;
+    int datos;
+    Pila a,aux;
+
+    inicpila(&a);
+    inicpila(&aux);
+
+    printf("ingrese los valores de la pila A\n");
+    do {
+        leer(&a);
+        printf("ingrese 'p' para continuar\n");
+        fflush(stdin);
+        scanf("%c", &continuar);
+    } while(continuar=='p');
+    system("cls");
+
+    printf("el valor de la pila A es de:");
+    mostrar(&a);
+
+    while(!pilavacia(&a)){
+        cont= tope(&a)+cont;
+        cont2++;
+        apilar(&aux, desapilar(&a));
+    }
+    promedio= cont/cont2;
+
+    printf("el promedio de la pila A es de: %.2f", promedio);
+
+    return 0;
+}
+
+EJERCICIO 4
+int main()
+{
+    char continuar='p';
+    Pila a, menor, aux;
+    inicpila(&a);
+    inicpila(&menor);
+    inicpila(&aux);
+
+    printf("ingrese los valores de pila A\n");
+
+    do{
+        leer(&a);
+        printf("ingrese 'p' si desea continuar: ");
+        fflush(stdin);
+        scanf("%c", &continuar);
+    } while(continuar=='p');
+    system("cls");
+
+    printf("los valores de la pila son:");
+    mostrar(&a);
+
+    apilar(&menor, desapilar(&a));
+
+    while(!pilavacia(&a)){
+        if (tope(&a)<tope(&menor)){
+            apilar(&aux, desapilar(&menor));
+            apilar(&menor, desapilar(&a));
+    }   else {
+            apilar(&aux, desapilar(&a));
+    }
+    }
+
+    printf("el elemento menor de la pila A es:");
+    mostrar(&menor);
+
+
+    return 0;
+}
+
+EJERCICIO 5
+int main()
+{
+    Pila origen, aux1, dato;
+
+    inicpila(&origen);
+    inicpila(&aux1);
+    inicpila(&dato);
+
+    apilar(&origen, 80);
+    apilar(&origen, 70);
+    apilar(&origen, 60);
+    apilar(&origen, 50);
+    apilar(&origen, 40);
+    apilar(&origen, 30);
+    apilar(&origen, 20);
+    apilar(&origen, 10);
+
+    printf("los datos de la pila origen son:");
+    mostrar(&origen);
+
+    leer(&dato);
+
+    while (tope(&origen)<tope(&dato)){
+        apilar(&aux1, desapilar(&origen));
+    }
+
+    apilar(&origen, desapilar(&dato));
+
+    while(!pilavacia(&aux1)){
+        apilar(&origen, desapilar(&aux1));
+    }
+
+    printf("el dato que ustdes a ingresado se encuntra en la siguiente posicion de la pila:");
+    mostrar(&origen);
+
+    return 0;
+}
+EJERCICIO 6
+int main()
+{
+    char continuar='p';
+    Pila a, b, menor, aux;
+    inicpila(&a);
+    inicpila(&menor);
+    inicpila(&aux);
+    inicpila(&b);
+
+    printf("ingrese los valores de pila A\n");
+
+    do{
+        leer(&a);
+        printf("ingrese 'p' si desea continuar: ");
+        fflush(stdin);
+        scanf("%c", &continuar);
+    } while(continuar=='p');
+    system("cls");
+
+    printf("los valores de la pila son:");
+    mostrar(&a);
+
+    apilar(&menor, desapilar(&a));
+
+    while(!pilavacia(&a)){
+        if (tope(&a)<tope(&menor)){
+            apilar(&aux, desapilar(&menor));
+            apilar(&menor, desapilar(&a));
+    }   else {
+            apilar(&aux, desapilar(&a));
+    }
+    }
+
+    printf("el elemento menor de la pila A es:");
+    mostrar(&menor);
+
+    while(!pilavacia(&aux)){
+        apilar(&a, desapilar(&aux));
+    }
+    apilar(&a, desapilar(&menor));
+
+
+    while (!pilavacia(&a)){
+        apilar(&b, desapilar(&a));
+
+        while(!pilavacia(&a)){
+            if (tope(&b)>tope(&a)){
+                apilar(&aux, desapilar(&b));
+                apilar(&b, desapilar(&a));
+            } else {
+                 apilar(&aux, desapilar(&a));
+            }
+        }
+        while (!pilavacia(&aux)){
+            apilar(&a, desapilar(&aux));
+        }
+
+        }
+
+    mostrar(&b);
+
+
+    return 0;
+}
+
+EJERCICIO 7
+int main()
+{
+    int dato;
+    Pila a, aux;
+    inicpila(&a);
+    inicpila(&aux);
+
+    apilar(&a, 10);
+    apilar(&a, 14);
+    apilar(&a, 16);
+    apilar(&a, 17);
+    apilar(&a, 8);
+    apilar(&a, 3);
+    apilar(&a, 12);
+    apilar(&a, 7);
+    apilar(&a, 1);
+    apilar(&a, 4);
+
+    printf("ingrese un numero menor a 20\n");
+    scanf("%d", &dato);
+
+    while (dato<=20){
+
+    if (tope(&a)==dato){
+        printf("el numero que ingrese esta dentro de la pila A");
+    }
+    apilar(&aux, desapilar(&a));
+    if (tope(&a)==dato){
+        printf("el numero que ingrese esta dentro de la pila A");
+    }
+    apilar(&aux, desapilar(&a));
+    if (tope(&a)==dato){
+        printf("el numero que ingrese esta dentro de la pila A");
+    }
+    apilar(&aux, desapilar(&a));
+    if (tope(&a)==dato){
+        printf("el numero que ingrese esta dentro de la pila A");
+    }
+    apilar(&aux, desapilar(&a));
+    if (tope(&a)==dato){
+        printf("el numero que ingrese esta dentro de la pila A");
+    }
+    apilar(&aux, desapilar(&a));
+    if (tope(&a)==dato){
+        printf("el numero que ingrese esta dentro de la pila A");
+    }
+    apilar(&aux, desapilar(&a));
+    if (tope(&a)==dato){
+        printf("el numero que ingrese esta dentro de la pila A");
+    }
+    apilar(&aux, desapilar(&a));
+    if (tope(&a)==dato){
+        printf("el numero que ingrese esta dentro de la pila A");
+    }
+    apilar(&aux, desapilar(&a));
+    if (tope(&a)==dato){
+        printf("el numero que ingrese esta dentro de la pila A");
+    }
+    apilar(&aux, desapilar(&a));
+    if (tope(&a)==dato){
+        printf("el numero que ingreso esta dentro de la pila A");
+    }
+    apilar(&aux, desapilar(&a));
+    }
+
+    return 0;
+}
+EJERCICIO 8
+int main()
+{
+    Pila a, aux, iguales;
+    int dato;
+
+    inicpila(&a);
+    inicpila(&aux);
+    inicpila(&iguales);
+
+    apilar(&a, 1);
+    apilar(&a, 2);
+    apilar(&a, 3);
+    apilar(&a, 4);
+    apilar(&a, 5);
+    apilar(&a, 6);
+    apilar(&a, 7);
+    apilar(&a, 8);
+    apilar(&a, 9);
+    apilar(&a, 10);
+
+    printf("los elementos de pila A son:");
+    mostrar(&a);
+
+    printf("ingrese el numero que desea sacar de la pila\n");
+    scanf("%d", &dato);
+
+    while (!pilavacia(&a)){
+        if (tope(&a)==dato){
+            apilar(&iguales, desapilar(&a));
+    }     else {
+            apilar(&aux, desapilar(&a));
+    }
+    }
+    while (!pilavacia(&aux)){
+        apilar(&a, desapilar(&aux));
+    }
+
+    printf("ahora la pila A no tiene el elemnto que ustdes deseo sacar:");
+    mostrar(&a);
+
+    return 0;
+}
+EJERCICIO 9
+int main()
+{
+    Pila a, b, c, d;
+    int i;
+
+    inicpila(&a);
+    inicpila(&b);
+    inicpila(&c);
+    inicpila(&d);
+
+    printf("ingrese cuatro numeros para verificar si son capicua:\n");
+    for (i=0; i<4; i++){
+        leer(&a);
+    }
+
+    printf("los numeros que ingreso son");
+    mostrar(&a);
+
+    apilar(&b, desapilar(&a));
+    apilar(&c, desapilar(&a));
+    apilar(&d, desapilar(&a));
+
+    if (tope(&a)==tope(&b) && tope(&c)==tope(&d)){
+        printf("el numero que a ingresado es capicua");
+    } else{
+        printf("el numero que a ingresado no es capicua");
+    }
+
+    return 0;
+}
+
+EJERCICIO 10
+int main()
+{
+    Pila a, b, auxA, auxB , c;
+
+    inicpila(&a);
+    inicpila(&b);
+    inicpila(&c);
+    inicpila(&auxA);
+    inicpila(&auxB);
+
+    apilar(&a,1);
+    apilar(&a,2);
+    apilar(&a,3);
+    apilar(&a,4);
+    apilar(&a,5);
+
+    apilar(&b, 6);
+    apilar(&b, 7);
+    apilar(&b, 8);
+    apilar(&b, 9);
+    apilar(&b, 10);
+
+    printf("el conjunto A esta conformado por:");
+    mostrar(&a);
+
+    printf("y el B por:");
+    mostrar(&b);
+
+    while (!pilavacia(&a)){
+        apilar(&auxA, desapilar(&a));
+    }
+
+    while(!pilavacia(&b)){
+        apilar(&auxB, desapilar(&b));
+    }
+
+
+    while (!pilavacia(&auxA)){
+        apilar(&c, desapilar(&auxA));
+    }
+
+     while (!pilavacia(&auxB)){
+        apilar(&c, desapilar(&auxB));
+     }
+
+    printf("la union de A y B es:");
+    mostrar(&c);
+
+
+    return 0;
+}
+EJERCICIO 11
+int main()
+{
+
+    Pila ordenada1, ordenada2, aux1, aux2, ordenadaFinal;
+    inicpila(&ordenada1);
+    inicpila(&ordenada2);
+    inicpila(&aux1);
+    inicpila(&aux2);
+    inicpila(&ordenadaFinal);
+
+    apilar(&ordenada1, 1);
+    apilar(&ordenada1, 3);
+    apilar(&ordenada1, 5);
+    apilar(&ordenada1, 7);
+
+    apilar(&ordenada2, 2);
+    apilar(&ordenada2, 4);
+    apilar(&ordenada2, 6);
+    apilar(&ordenada2, 8);
+
+    printf("el valor de la pila ORDENADA 1 es:");
+    mostrar(&ordenada1);
+
+    printf("el valor de la pila ORDENADA 2 es:");
+    mostrar(&ordenada2);
+
+    while(!pilavacia(&ordenada1) && !pilavacia(&ordenada2)){
+        apilar(&aux1, desapilar(&ordenada1));
+        apilar(&aux2, desapilar(&ordenada2));
+    }
+
+    while(!pilavacia(&aux1) && !pilavacia(&aux2)){
+        apilar(&ordenadaFinal, desapilar(&aux1));
+        apilar(&ordenadaFinal, desapilar(&aux2));
+    }
+    printf("los valores de la pila FINAL son:");
+    mostrar(&ordenadaFinal);
+
+
+
+    return 0;
+}
+EJERCICIO 12
+int main()
+{
+    Pila origen, menor, aux1;
+    int dato;
+    char continuar='p';
+
+    inicpila(&origen);
+    inicpila(&menor);
+    inicpila(&aux1);
+
+    printf("ingrese los datos de ORIGEN\n");
+    do {
+        leer(&origen);
+        printf("ingrese 'p' para continuar: ");
+        fflush(stdin);
+        scanf("%c", &continuar);
+    } while(continuar=='p');
+
+    printf("los datos que ingreso son:");
+    mostrar(&origen);
+
+    while (!pilavacia(&origen)){
+        apilar(&menor, desapilar(&origen));
+
+        while (!pilavacia(&origen)){
+            if (tope(&origen)<tope(&menor)){
+                apilar(&aux1, desapilar(&menor));
+                apilar(&menor , desapilar(&origen));
+            } else {
+                 apilar(&aux1, desapilar(&origen));
+            }
+        }
+
+        while(!pilavacia(&aux1)){
+            apilar(&origen, desapilar(&aux1));
+        }
+        }
+
+    while(!pilavacia(&menor)){
+        apilar(&aux1, desapilar(&menor));
+    }
+
+    while(!pilavacia(&aux1)){
+        apilar(&origen, desapilar(&aux1));
+    }
+
+
+    printf("ahora el valor de la pila ORIGEN es:");
+    mostrar(&origen);
+
+
+  return 0;
+}
+
+EJERCICIO 13
+int main()
+{
+    Pila mazo, j1, j2, aux1, aux2;
+    int cont1=0;
+    int cont2=0;
+    int resultado;
+
+    inicpila(&mazo);
+    inicpila(&j1);
+    inicpila(&j2);
+    inicpila(&aux1);
+    inicpila(&aux2);
+
+    apilar(&mazo, 5);
+    apilar(&mazo, 7);
+    apilar(&mazo, 8);
+    apilar(&mazo, 2);
+    apilar(&mazo, 6);
+    apilar(&mazo, 1);
+    apilar(&mazo, 4);
+    apilar(&mazo, 3);
+
+    printf("los valores del MAZO son:");
+    mostrar(&mazo);
+
+    while (!pilavacia(&mazo)){
+        apilar(&j1, desapilar(&mazo));
+        apilar(&j2, desapilar(&mazo));
+    }
+
+    printf("las cartas del jugador 1 son:");
+    mostrar(&j1);
+    printf("y las del jugador 2 son:");
+    mostrar(&j2);
+
+    while(!pilavacia(&j1)){
+        cont1= tope(&j1)+cont1;
+        apilar(&aux1, desapilar(&j1));
+    }
+
+    while (!pilavacia(&j2)){
+        cont2= tope(&j2)+cont2;
+        apilar(&aux2, desapilar(&j2));
+    }
+
+    resultado= cont1+cont2;
+
+    while(!pilavacia(&aux1)){
+        apilar(&j1, desapilar(&aux1));
+    }
+
+     while (!pilavacia(&aux2)){
+        apilar(&j2, desapilar(&aux2));
+     }
+
+     if (cont1>=cont2){
+        while (!pilavacia(&j2)){
+            apilar(&j1, desapilar(&j2));
+        }
+        printf("el ganador es el jugador 1 con %d puntos\n", resultado);
+     } else if (cont2>cont1){
+        while (!pilavacia(&j1)){
+            apilar(&j2, desapilar(&j1));
+        }
+        printf("el ganador es el jugador 2 con %d puntos\n", resultado);
+     }
+
+   return 0;
+}
+
