@@ -1,0 +1,600 @@
+PREGUNTAS
+1. Cargar desde el teclado una pila DADA con 5 elementos. Pasar los tres primeros elementos a la pila AUX1 y los dos restantes a 
+la pila AUX2, ambas pilas inicializadas en vacío. 
+2. Cargar desde el teclado la pila ORIGEN e inicializar en vacío la pila DESTINO. Pasar todos los elementos de la pila ORIGEN a 
+la pila DESTINO. 
+3. Cargar desde teclado una pila DADA y pasar a la pila DISTINTOS todos aquellos elementos distintos al valor 8. 
+4. Cargar desde el teclado la pila ORIGEN e inicializar en vacío la pila DESTINO. Pasar los elementos de la pila ORIGEN a la pila 
+DESTINO, pero dejándolos en el mismo orden. 
+5. Cargar desde el teclado la pila DADA. Invertir la pila de manera que DADA contenga los elementos cargados originalmente en ella, 
+pero en orden inverso. 
+6. Pasar el primer elemento (tope) de la pila DADA a su última posición (base), dejando los restantes elementos en el mismo orden. 
+7. Pasar el último elemento (base) de la pila DADA a su primera posición (tope), dejando los restantes elementos en el mismo orden. 
+8. Repartir los elementos de la pila MAZO en las pilas JUGADOR1 y JUGADOR2 en forma alternativa. 
+9. Comparar la cantidad de elementos de las pilas A y B. Mostrar por pantalla el resultado. 
+10. Comparar las pilas A y B, evaluando si son completamente iguales (en cantidad de elementos, valores que contienen y posición 
+de los mismos). Mostrar por pantalla el resultado. 
+11. Suponiendo la existencia de una pila MODELO que no esté vacía, eliminar de la pila DADA todos los elementos que sean iguales 
+al tope de la pila MODELO. 
+12. Suponiendo la existencia de una pila MODELO (vacía o no), eliminar de la pila DADA todos los elementos que existan en MODELO. 
+13. Suponiendo la existencia de una pila LÍMITE, pasar los elementos de la pila DADA que sean mayores o iguales que el tope de 
+LIMITE a la pila MAYORES, y los elementos que sean menores a la pila MENORES. 
+14. Determinar si la cantidad de elementos de la pila DADA es par. Si es par, pasar el elemento del tope de la pila AUX a la pila 
+PAR y si es impar pasar el tope a la pila IMPAR. 
+
+EJERCICIO 1
+int main()
+{
+    Pila pila1, aux1, aux2;
+    int i;
+    inicpila(&pila1);
+    inicpila(&aux1);
+    inicpila(&aux2);
+
+    for (i=0; i<5; i++){
+        leer(&pila1);
+    }
+
+    printf("los elemntos de pila 1 son:");
+    mostrar(&pila1);
+
+    apilar(&aux1, desapilar(&pila1));
+    apilar(&aux1, desapilar(&pila1));
+    apilar(&aux1, desapilar(&pila1));
+    apilar(&aux2, desapilar(&pila1));
+    apilar(&aux2, desapilar(&pila1));
+
+    printf("los valores de aux 1 son:");
+    mostrar(&aux1);
+    printf("y los valores de aux 2 son;");
+    mostrar(&aux2);
+
+    return 0;
+}
+EJERCICIO 2
+int main()
+{
+    Pila origen, destino;
+    int i;
+    inicpila(&origen);
+    inicpila(&destino);
+
+    for (i=0; i<5; i++)
+    {
+        leer(&origen);
+    }
+
+    printf("los elementos de origen son:");
+    mostrar(&origen);
+
+    apilar(&destino, desapilar(&origen));
+    apilar(&destino, desapilar(&origen));
+    apilar(&destino, desapilar(&origen));
+    apilar(&destino, desapilar(&origen));
+    apilar(&destino, desapilar(&origen));
+
+    printf ("el valor de destino es:");
+    mostrar(&destino);
+
+    return 0;
+}
+
+EJERCICIO 3
+int main()
+{
+    Pila pila1, distinto, ocho;
+    int i;
+    inicpila(&pila1);
+    inicpila(&distinto);
+    inicpila(&ocho);
+   for (i=0; i<6; i++){
+    leer(&pila1);
+   }
+
+    printf("\nlos valores de pila 1 son:");
+    mostrar(&pila1);
+
+    while(!pilavacia(&pila1)){
+
+       if (tope(&pila1)==8){
+        apilar(&ocho, desapilar(&pila1));
+
+    }   else{
+         apilar(&distinto, desapilar(&pila1));
+    }
+    }
+       apilar(&pila1, desapilar(&ocho));
+       apilar(&pila1, desapilar(&ocho));
+
+       printf("pila 1 tiene el valor de :");
+       mostrar(&pila1);
+
+       printf("el valor de distinto es:");
+       mostrar(&distinto);
+
+    return 0;
+}
+
+EJERCICIO 4
+int main()
+{
+    Pila origen, destino, aux1;
+    int i;
+    inicpila(&origen);
+    inicpila(&destino);
+    inicpila(&aux1);
+
+    for(i=0;i<5; i++){
+        leer(&origen);
+    }
+
+    printf("\nlos datos de origen son:");
+    mostrar(&origen);
+
+
+    while(tope(&origen)>1){
+        apilar(&aux1, desapilar(&origen));
+    }
+
+
+    while(tope(&aux1)>1){
+        apilar(&destino, desapilar(&aux1));
+    }
+    printf("los datos de destino son:");
+    mostrar(&destino);
+
+
+ return 0;
+    }
+EJERCICIO 5
+int main()
+{
+    int i;
+    Pila pila1, aux1, aux2;
+    inicpila(&pila1);
+    inicpila(&aux1);
+    inicpila(&aux2);
+
+    for (i=0; i<4; i++){
+        leer(&pila1);
+    }
+
+
+    printf("\nlos elementos de pila 1 son:");
+    mostrar(&pila1);
+
+
+    apilar(&aux1, desapilar(&pila1));
+    apilar(&aux1, desapilar(&pila1));
+    apilar(&aux1, desapilar(&pila1));
+    apilar(&aux1, desapilar(&pila1));
+
+    apilar(&aux2, desapilar(&aux1));
+    apilar(&aux2, desapilar(&aux1));
+    apilar(&aux2, desapilar(&aux1));
+    apilar(&aux2, desapilar(&aux1));
+
+    apilar(&pila1, desapilar(&aux2));
+    apilar(&pila1, desapilar(&aux2));
+    apilar(&pila1, desapilar(&aux2));
+    apilar(&pila1, desapilar(&aux2));
+
+    mostrar(&pila1);
+
+return 0;
+}
+EJERCICIO 6
+int main()
+{
+    int i;
+    Pila pila1, aux1, aux2;
+    inicpila(&pila1);
+    inicpila(&aux1);
+    inicpila(&aux2);
+
+
+    for (i=0; i<5; i++){
+        leer(&pila1);
+    }
+
+    printf("los valores de pila 1 son:");
+    mostrar(&pila1);
+
+    apilar(&aux1, desapilar(&pila1));
+
+    apilar(&aux2, desapilar(&pila1));
+    apilar(&aux2, desapilar(&pila1));
+    apilar(&aux2, desapilar(&pila1));
+    apilar(&aux2, desapilar(&pila1));
+
+    apilar(&pila1, desapilar(&aux1));
+    apilar(&pila1, desapilar(&aux2));
+    apilar(&pila1, desapilar(&aux2));
+    apilar(&pila1, desapilar(&aux2));
+    apilar(&pila1, desapilar(&aux2));
+
+    printf("ahora el valor de pila 1 es de:");
+    mostrar(&pila1);
+    return 0;
+}
+EJERCICIO 7
+int main()
+{
+    int i;
+    Pila  pila1, aux1,aux2;
+    inicpila(&pila1);
+    inicpila(&aux1);
+    inicpila(&aux2);
+
+    for (i=0; i<5; i++){
+        leer(&pila1);
+    }
+
+
+    printf("los valores de pila 1 son:");
+    mostrar(&pila1);
+
+    apilar(&aux1, desapilar(&pila1));
+    apilar(&aux1, desapilar(&pila1));
+    apilar(&aux1, desapilar(&pila1));
+    apilar(&aux1, desapilar(&pila1));
+
+    apilar(&aux2, desapilar(&pila1));
+
+    apilar(&pila1, desapilar(&aux1));
+    apilar(&pila1, desapilar(&aux1));
+    apilar(&pila1, desapilar(&aux1));
+    apilar(&pila1, desapilar(&aux1));
+
+    apilar(&pila1, desapilar(&aux2));
+
+    printf("ahora los elementos de pila 1 son:");
+    mostrar(&pila1);
+
+    return 0;
+}
+EJERCICIO 8
+int main()
+{
+    int i;
+    Pila mazo, jugador1, jugador2;
+    inicpila(&mazo);
+    inicpila(&jugador1);
+    inicpila(&jugador2);
+
+    for (i=0; i<6; i++){
+        leer(&mazo);
+    }
+    printf("los elementos de mazo son:");
+    mostrar(&mazo);
+
+    do{
+        apilar(&jugador1, desapilar(&mazo));
+        apilar(&jugador2, desapilar(&mazo));
+
+    }while (!pilavacia(&mazo));
+
+    printf("los valores de jugador 1 son:");
+    mostrar(&jugador1);
+    printf("\n los valores de jugador 2 son:");
+    mostrar(&jugador2);
+
+    return 0;
+}
+EJERCICIO 9
+int main()
+{
+    int i;
+    Pila pilaA, pilaB, auxA, auxB, datosaux;
+    inicpila(&pilaA);
+    inicpila(&pilaB);
+    inicpila(&auxA);
+    inicpila(&auxB);
+    inicpila(&datosaux);
+
+    printf("ingrese los datos de pila A:\n");
+    for(i=0; i<3; i++){
+        leer(&pilaA);
+    }
+    printf("ingrese los datos de pila B\n");
+    for(i=0; i<3; i++){
+        leer(&pilaB);
+    }
+    printf("\nlos datos de pila A son:");
+    mostrar(&pilaA);
+    printf("los datos de pila B son:");
+    mostrar(&pilaB);
+
+
+        if (tope(&pilaA)==tope(&pilaB)){
+            printf("los topes son iguales");
+            apilar(&auxA, desapilar(&pilaA));
+            apilar(&auxB, desapilar(&pilaB));
+            mostrar(&auxA);
+            mostrar(&auxB);
+        }else{
+            printf("los topes sondistintos");
+            apilar(&auxA, desapilar(&pilaA));
+            apilar(&auxB, desapilar(&pilaB));
+            mostrar(&auxA);
+            mostrar(&auxB);
+        }
+        apilar(&datosaux, desapilar(&auxA));
+        apilar(&datosaux, desapilar(&auxB));
+
+        if (tope(&pilaA)==tope(&pilaB)){
+            printf("el valor intermedio es igual");
+            apilar(&auxA, desapilar(&pilaA));
+            apilar(&auxB, desapilar(&pilaB));
+            mostrar(&auxA);
+            mostrar(&auxB);
+        }else{
+            printf("el valor intermedio es distinto");
+            apilar(&auxA, desapilar(&pilaA));
+            apilar(&auxB, desapilar(&pilaB));
+            mostrar(&auxA);
+            mostrar(&auxB);
+        }
+        apilar(&datosaux, desapilar(&auxA));
+        apilar(&datosaux, desapilar(&auxB));
+
+        if (tope(&pilaA)==tope(&pilaB)){
+            printf("la base es igual");
+            apilar(&auxA, desapilar(&pilaA));
+            apilar(&auxB, desapilar(&pilaB));
+            mostrar(&auxA);
+            mostrar(&auxB);
+        }else{
+            printf("la base es distinta");
+            apilar(&auxA, desapilar(&pilaA));
+            apilar(&auxB, desapilar(&pilaB));
+            mostrar(&auxA);
+            mostrar(&auxB);
+        }
+    return 0;
+    }
+EJERCICIO 10
+int main()
+{
+    char continuar='s';
+    Pila pilaA, pilaB, auxA, auxB, aux1, aux2, datosaux;
+    inicpila(&pilaA);
+    inicpila(&pilaB);
+    inicpila(&auxA);
+    inicpila(&auxB);
+    inicpila(&datosaux);
+    inicpila(&aux1);
+    inicpila(&aux2);
+
+    printf("ingrese un valor a pila A\n");
+    do {
+        leer(&pilaA);
+        printf("si desea continuar ingrese 's'?\n");
+        fflush(stdin);
+        scanf("%c", &continuar);
+    }   while (continuar=='s');
+        system("cls");
+
+        printf("ingrese un valor a pila B\n");
+    do {
+        leer(&pilaB);
+        printf("si desea continuar ingrese 's'?\n");
+        fflush(stdin);
+        scanf("%c", &continuar);
+    }   while (continuar=='s');
+        system("cls");
+
+    printf("los datos de pila A son:\n");
+    mostrar(&pilaA);
+    printf("los datos de pila B son:\n");
+    mostrar(&pilaB);
+
+   while((!pilavacia(&pilaA)) && (!pilavacia(&pilaB))){
+    apilar(&auxA, desapilar(&pilaA));
+    apilar(&auxB, desapilar(&pilaB));
+   }
+
+   if ((pilavacia(&pilaA)) && (pilavacia(&pilaB))){
+    printf("las pilas contienen una misma cantidad de elementos\n");
+   } else{
+        printf("las pilas no contienen la misma cantidad de elemntos\n");
+   }
+
+   while (!pilavacia(&auxA)){
+    apilar(&pilaA, desapilar(&auxA));
+   }
+   while(!pilavacia(&auxB)){
+    apilar(&pilaB, desapilar(&auxB));
+   }
+
+   while (!pilavacia(&pilaA) && !pilavacia(&pilaB)){
+     if (tope(&pilaA)==tope(&pilaB)){
+        printf("los topes son iguales");
+     }  else{
+         printf("los topes son distintos");
+     }
+   }
+    return 0;
+}
+
+EJERCICIO 11
+int main()
+{
+    char continuar='p';
+    Pila modelo, dada, iguales, distintos;
+    inicpila(&modelo);
+    inicpila(&dada);
+    inicpila(&iguales);
+    inicpila(&distintos);
+
+    apilar(&modelo, 4);
+    apilar(&modelo, 7);
+
+    printf("los datos de pila modelo son:");
+    mostrar(&modelo);
+
+    printf("ingrese los datos de la pila DADA\n");
+    do {
+        leer(&dada);
+        printf("ingrese 'p' para continuar cargando la pila\n");
+        fflush(stdin);
+        scanf("%c", &continuar);
+    }while(continuar=='p');
+    system("cls");
+
+    printf("los elementos de pila dada son:");
+    mostrar (&dada);
+
+    while (!pilavacia(&dada)){
+        if (tope(&modelo)==tope(&dada)){
+            apilar(&iguales, desapilar(&dada));
+        }else{
+        apilar(&distintos, desapilar(&dada));}
+    }
+    while (!pilavacia(&distintos)){
+        apilar(&dada, desapilar(&distintos));
+    }
+
+    printf("ahora los elementos de DADA son distintos al tope de la pila MODELO");
+    mostrar(&dada);
+
+    return 0;
+}
+EJERCICIO 12
+int main()
+{
+    char continuar='p';
+    Pila modelo, dada, distintos, iguales, modelo1;
+    inicpila(&modelo);
+    inicpila(&dada);
+    inicpila(&distintos);
+    inicpila(&iguales);
+    inicpila(&modelo1);
+
+    apilar(&modelo, 8);
+    apilar(&modelo, 7);
+    apilar(&modelo, 3);
+
+    printf("ingrese los datos de la pila DADA:\n");
+    do{
+        leer(&dada);
+        printf("ingrese 'P' si desea continuar de lo contrario cualquier letra:\n");
+        fflush(stdin);
+        scanf("%c", &continuar);
+    } while (continuar=='p');
+    system("cls");
+
+     printf("los datos de la pila modelo son:");
+    mostrar(&modelo);
+
+    printf("los valores de la pila DADA son:");
+    mostrar(&dada);
+
+    while(!pilavacia(&modelo)){
+      while (!pilavacia(&dada)){
+        if (tope(&modelo)==tope(&dada)){
+            apilar(&iguales, desapilar(&dada));
+           }else{
+            apilar(&distintos, desapilar(&dada));
+    }
+    }  while(!pilavacia(&distintos)){
+        apilar(&dada, desapilar(&distintos));
+    }
+        apilar(&modelo1, desapilar(&modelo));
+    }
+        while (!pilavacia(&modelo1)){
+        apilar(&modelo, desapilar(&modelo1));
+     }
+
+        printf("los valores de dada ahora son");
+        mostrar(&dada);
+
+    return 0;
+}
+
+EJERCICIO 13
+int main()
+{
+    char continuar='p';
+    Pila limite, dada, mayores, menores;
+    inicpila(& limite);
+    inicpila(& dada);
+    inicpila(& mayores);
+    inicpila(& menores);
+
+    apilar(&limite, 10);
+    apilar(&limite, 5);
+
+    printf("ingrese los valores de la pila DADA\n");
+    do{
+        leer(&dada);
+        printf("ingrese 'p' para continuar cargando la pila\n");
+        fflush(stdin);
+        scanf("%c", &continuar);
+    }while (continuar=='p');
+    system("cls");
+
+     printf("el valor de LIMITE es:");
+     mostrar(&limite);
+     printf("el valor de DADA es:");
+     mostrar(&dada);
+
+     while (!pilavacia(&dada)){
+        if (tope(&dada)>=tope(&limite)){
+            apilar(&mayores, desapilar(&dada));
+        }else{
+             apilar(&menores, desapilar(&dada));
+        }
+        }
+
+        printf("los datos de la pila MAYOR es:");
+        mostrar(&mayores);
+        printf("los datos de la pila MENOR son:");
+        mostrar(&menores);
+
+    return 0;
+}
+EJERCICIO 14
+int main()
+{
+    char continuar='p';
+    Pila dada, aux, par, impar;
+    inicpila(& dada);
+    inicpila(& aux);
+    inicpila(& par);
+    inicpila(& impar);
+
+    printf("ingrese los valore de la pila DADA:\n");
+    do {
+        leer(&dada);
+        printf("si decea continuar presione 'p'\n");
+        fflush(stdin);
+        scanf("%c", &continuar);
+    } while(continuar=='p');
+        system("cls");
+
+     printf("ingrese los valore de la pila AUX:\n");
+    do {
+        leer(&aux);
+        printf("si decea continuar presione 'p'\n");
+        fflush(stdin);
+        scanf("%c", &continuar);
+    } while(continuar=='p');
+      system("cls");
+
+    printf("los valores de DADA son:");
+    mostrar(&dada);
+    printf("los valores de AUX son:");
+    mostrar(&aux);
+
+    if (dada%2==0){
+        printf("puto")
+    }
+
+
+
+    return 0;
+}
+
+
+
