@@ -1,0 +1,974 @@
+/**
+1. Hacer una función que reciba como parámetro un arreglo de números enteros y permita que
+el usuario ingrese valores al mismo por teclado. La función debe retornar la cantidad de
+elementos cargados en el arreglo
+
+2. Hacer una función que reciba como parámetro un arreglo y
+la cantidad de elementos (válidos) cargados en él y los muestre por pantalla.
+
+3. Hacer una función que reciba como parámetro un arreglo y
+la cantidad de elementos (válidos) cargados en él y calcule la suma de sus elementos.
+
+4. Hacer una función que reciba como parámetro un arreglo, la cantidad de elementos (válidos)
+cargados en él y una Pila. La función debe copiar los elementos del arreglo en la pila.
+
+5. Realizar una función que sume los elementos de un arreglo números reales de dimensión
+100. (para poder hacer esta función, hay que cargar un arreglo de reales, se recomienda
+hacer una función para cargar y otra para mostrar este tipo de arreglos)
+
+6. Realizar una función que indique si un elemento dado se encuentra en un
+arreglo de caracteres
+
+7. Realizar una función que inserte un carácter en un arreglo ordenado alfabéticamente,
+conservando el orden.
+
+8. Realizar una función que obtenga el máximo carácter de un arreglo dado.
+
+9. Realizar una función que determine si un arreglo es capicúa.
+
+10.Realizar una función que invierta los elementos de un arreglo.
+
+11.Ordenar un arreglo según los siguientes métodos:
+a. Selección
+b. Inserción
+
+12.Dados dos arreglos ordenados alfabéticamente, crear un tercer arreglo con los elementos
+de los dos primeros intercalados, de manera que quede un arreglo también
+ordenado alfabéticamente.
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <time.h>
+#include "pila.h"
+
+/**
+*******************************
+<<<<<<<<<PROTOTIPADOS>>>>>>>>>
+*******************************
+*/
+
+///funciones para el switch
+
+void mustra_menu ();
+int funcion1 (int a[], int v, int dim);
+void funcion2 (int a[], int v);
+void funcion3 (int a[], int v);
+void funcion4 (int a[], int v, Pila pila);
+float funcion5 (float a[], int v, int dim);
+void funcion6 (float a[], int v);
+void funcion7 (float a[], int v);
+int funcion8 (char a[], int v, int dim);
+void funcion9 (char a[], int v);
+void funcionA (char a[], int v);
+void funcionB (int a[], int v);
+void funcionC (float a[], int v);
+void funcionD (int a[], int v);
+void funcionE (float a[], int v);
+int funcionF (char a[], int v, int dim);
+void funcionG (char a[], int v);
+void funcionH (int a[], int v);
+void funcionI (int a[], int v);
+void funcionJ (float a[], int v);
+void funcionK (char a[], int v);
+int funcionM (char a[], int v, int dim);
+void funcionN (char a[], int v);
+int funcionO (char a[], int vA, char b[], int vB, char c[], int vC, int dim);
+void muestra_ejercicio_12 (char a[], int v);
+
+///funciones de ejecucion
+
+int  carga_arreglo_int(int a[], int v, int dim);
+void muestra_arreglo (int a[], int v);
+int suma_arreglo (int a[], int v);
+void arreglo_a_pila (int a[], int v, Pila *pila);
+float carga_arreglo_float (float [], int v, int dim);
+void muestra_arreglo_float (float a[], int v);
+float suma_arreglo_float (float a[], int v);
+int carga_arreglo_char (char a[], int v, int dim);
+void muestra_arreglo_char (char a[], int v);
+int busca_dato_en_arreglo_char (char a[], int v, char dato);
+int busca_dato_en_arreglo_int (int a[], int v, int dato);
+int busca_dato_en_arreglo_float (float a[], int v, float dato);
+int busqueda_menor_int (int a[], int v);
+float busqueda_menor_float (float a[], int v);
+int inserta_letra_arreglo_ordenado (char a[], int v, int dim, char dato);
+char busqueda_mayor_char (char a[], int v);
+int capicua_V_F (int a[], int v);
+void invierte_arreglo_int (int a[], int v);
+void invierte_arreglo_float (float a[], int v);
+void invierte_arreglo_char (char a[], int v);
+int mezcla_arreglo_char ( char a[], int vA, char b[], int vB, char c[], int vC, int dim);
+
+
+const char ESC=27;
+#define elementos 100 ///dimension de los arreglos
+
+int main()
+{
+
+    ///arreglos y validos
+
+    int arreglo1[elementos]; ///arreglos de tipo ENTERO
+    int validos1=0; ///validos de arreglo ENTERO
+
+    float arregloF[elementos]; ///arreglos de tipo FLOAT
+    int validosF=0; ///validos de arreglo FLOAT
+
+    char arregloC[elementos]; ///arreglos de tipo CHAR
+    int validosC=0; ///validos de arreglo CHAR
+
+    char arregloABC [elementos]; ///arreglo ORDENADO ABC para ejercicio 12
+    int validosABC=0; ///validos arreglo ABC
+
+    char arreglo12[elementos]; ///arreglo del ejercicio 12 finalizado
+    int validos12 =0; ///validos arreglo 12
+
+    ///variables
+
+    char opcion1;
+
+    ///pilas
+
+    Pila pila1;
+    inicpila(&pila1);
+
+
+    do{
+      system("cls");
+      mustra_menu ();
+      opcion1 = getch();
+      system("cls");
+
+    switch (opcion1) {
+
+        case 49:
+            validos1 = funcion1(arreglo1, validos1, elementos);
+            break;
+        case 50:
+            funcion2(arreglo1, validos1);
+            break;
+        case 51:
+            funcion3(arreglo1, validos1);
+            break;
+        case 52:
+            funcion4(arreglo1, validos1, pila1);
+            break;
+        case 53:
+            validosF = funcion5(arregloF, validosF, elementos);
+            break;
+        case 54:
+            funcion6(arregloF, validosF);
+            break;
+        case 55:
+            funcion7(arregloF, validosF);
+            break;
+        case 56:
+            validosC = funcion8(arregloC, validosC, elementos);
+            break;
+        case 57:
+            funcion9(arregloC, validosC);
+            break;
+        case 97:
+            funcionA(arregloC, validosC);
+            break;
+        case 98:
+            funcionB(arreglo1, validos1);
+            break;
+        case 99:
+            funcionC(arregloF, validosF);
+            break;
+        case 100:
+            funcionD(arreglo1, validos1);
+            break;
+        case 101:
+            funcionE(arregloF, validosF);
+            break;
+        case 102:
+            validosC = funcionF(arregloC, validosC, elementos);
+            break;
+        case 103:
+            funcionG(arregloC, validosC);
+            break;
+        case 104:
+            funcionH(arreglo1, validos1);
+            break;
+        case 105:
+            funcionI(arreglo1, validos1);
+            break;
+        case 106:
+            funcionJ(arregloF, validosF);
+            break;
+        case 107:
+            funcionK(arregloC, validosC);
+            break;
+        case 109:
+            validosABC = funcionM(arregloABC, validosABC, elementos);
+            break;
+        case 110:
+            funcionN(arregloABC, validosABC);
+            break;
+        case 111:
+            /**profe te explico no me anda la funcion de mostrar el arreglo 12 que es el
+            mezcla los arreglos arreglos del arregloc y el arregloabc pero si lo muestro
+            de esta menera funciona bien */
+
+             validos12 = funcionO(arregloC, validosC, arregloABC, validosABC, arreglo12, validos12, elementos);
+
+             printf("este es el arreglo 12:\n ");
+             printf(" %c- ", arreglo12[0]);
+             printf(" %c- ", arreglo12[1]);
+             printf(" %c- ", arreglo12[2]);
+             printf(" %c- ", arreglo12[3]);
+             printf(" %c- ", arreglo12[4]);
+             printf(" %c- \n", arreglo12[5]);
+             break;
+
+      }
+
+    system("pause");
+    } while (opcion1!=ESC);
+
+    return 0;
+}
+
+///muestra el menu
+
+void mustra_menu ()
+{
+    printf("<<QUE FUNCION DESEA RELIZAR?>>");
+    printf("\n");
+    printf("\n1= Cargar arreglo INT: ");
+    printf("\n2= Mostrar arreglo INT: ");
+    printf("\n3= Suma elementos de un arreglo INT: ");
+    printf("\n4= Pasar arreglo a una PILA: ");
+    printf("\n5= Carga arreglo FLOAT: ");
+    printf("\n6= Muestra arreglo FLOAT: ");
+    printf("\n7= Suma arreglo FLOAT: ");
+    printf("\n8= Carga arreglo CHAR: ");
+    printf("\n9= Muestra arreglo CHAR: ");
+    printf("\n");
+    printf("\n<<PRESIONE LA LETRA QUE NECESITE>>");
+    printf("\n");
+    printf("\nA= Busca dato en arreglo CHAR: ");
+    printf("\nB= Busca dato en arreglo INT: ");
+    printf("\nC= Busca dato en arreglo FLOAT: ");
+    printf("\nD= Busca menor en arreglo INT: ");
+    printf("\nE= Busca menor en arreglo FLOAT: ");
+    printf("\nF= Inserta letra a arreglo CHAR YA ORDENADO POR ABC: ");
+    printf("\nG= Busca maximo en arreglo CHAR: ");
+    printf("\nH= Verifica si un arreglo de tipo INT es capicua: ");
+    printf("\nI= Invierte un arreglo INT: ");
+    printf("\nJ= Invierte un arreglo FLOAT: ");
+    printf("\nK= Invierte un arreglo CHAR: ");
+    printf("\nM= Carga arreglo ABC: ");
+    printf("\nN= Muestra arreglo ABC: ");
+    printf("\nO= Muestra arreglo intercalado con dos arreglos cargados por abc: ");
+    printf("\n");
+    printf("\n");
+    printf("ingrese numero de funcion o ESC para salir: ");
+
+}
+
+/*************************************
+********                     *********
+****                              ****
+* <<<<<<FUNCIONES PARA EL MENU>>>>>  *
+****                              ****
+********                      ********
+*************************************/
+
+///carga arreglo
+
+int funcion1 (int a[], int v, int dim) ///recibe el arreglo, validos y dimension
+{
+    v= carga_arreglo_int(a, v, dim);
+    printf("\n\n");
+
+    return v;
+}
+
+///muestra arreglo
+
+void funcion2 (int a[], int v) ///recibe arreglo y validos
+{
+    printf("este es el arreglo: ");
+    muestra_arreglo (a, v);
+    printf("\n\n");
+}
+
+///muestra suma arreglo
+
+void funcion3 (int a[], int v) ///recibe arreglo y validos
+{
+    int suma=0;
+    printf("la suma del arreglo es de: ");
+    suma = suma_arreglo(a, v);
+    printf("%d\n\n", suma); ///muestra la suma del arreglo
+
+}
+
+/// muestra arreglo a pila
+
+void funcion4 (int a[], int v, Pila pila) ///recibe un arreglo y sus validos para pasarlo a una pila
+{
+
+    printf("pasaje de arreglo a pila:\n");
+    arreglo_a_pila(a, v, &pila);
+    mostrar(&pila);
+}
+
+///muestra carga arreglo float
+
+float funcion5 (float a[], int v, int dim) ///recibe arreglo float validos y dimension
+{
+    v = carga_arreglo_float(a, v, dim);
+    printf("\n\n");
+
+    return v;
+}
+
+///muestra arreglo FLOAT
+
+void funcion6 (float a[], int v) ///recibe arreglo float y validos para mostrarlo
+{
+    printf("los valores del arreglo FLOAT son:\n");
+    muestra_arreglo_float(a, v);
+    printf("\n\n");
+
+}
+
+///muestra suma arreglo FLOAT
+
+void funcion7 (float a[], int v)
+{
+    float suma;
+    suma = suma_arreglo_float(a, v);
+    printf("la suma del arreglo FLOAT es: %.3f ", suma);
+    printf("\n\n");
+
+}
+
+///muestra carga arreglo CHAR
+
+int funcion8 (char a[], int v, int dim) ///recibe arreglo char validos y dimension
+{
+    v = carga_arreglo_char(a, v, dim);
+    printf("\n\n");
+
+    return v;
+}
+
+///muestra arreglo char
+
+void funcion9 (char a[], int v)
+{
+    printf("este es el arreglo char:\n");
+    muestra_arreglo_char(a, v);
+    printf("\n\n");
+
+}
+
+///muestra busca dato en arreglo char
+
+void funcionA (char a[], int v)
+{
+    char dato;
+    int encontrado;
+
+    printf("que dato desea buscar?\n");
+    scanf("%c", &dato);
+
+    encontrado = busca_dato_en_arreglo_char(a, v, dato); ///recibe arreglo validos y el dato a buscar
+
+    if (encontrado==1){ ///verifica si el dato fue encontrado o no retorna verdadero (1)o falso (0)
+
+        printf("\nel dato %c se encuentra en el arreglo\n\n", dato);
+    } else {
+        printf("\nel dato %c NO se encunetra en el arreglo\n\n", dato);
+    }
+
+    }
+
+///muestra busca dato en arreglo INT
+
+void funcionB (int a[], int v)
+{
+    int dato;
+    int encontrado;
+
+    printf("que dato desea buscar?\n");
+    scanf("%d", &dato);
+
+    encontrado = busca_dato_en_arreglo_int(a, v, dato); ///recibe arreglo validos y el dato a buscar
+
+    if (encontrado==1){ ///verifica si el dato fue encontrado o no retorna verdadero (1)o falso (0)
+
+        printf("\nel dato %d se encuentra en el arreglo\n\n", dato);
+    } else {
+        printf("\nel dato %d NO se encunetra en el arreglo\n\n", dato);
+    }
+
+    }
+
+///muestra busca dato en arreglo FLOAT
+
+void funcionC(float a[], int v)
+{
+    float dato;
+    int encontrado;
+
+    printf("que dato desea buscar?\n");
+    scanf("%f", &dato);
+
+    encontrado = busca_dato_en_arreglo_float(a, v, dato); ///recibe arreglo validos y el dato a buscar
+
+    if (encontrado==1){ /// verifica si el dato fue encontrado o no  retorna verdadero (1)o falso (0)
+
+        printf("\nel dato %.3f se encuentra en el arreglo\n\n", dato);
+    } else {
+        printf("\nel dato %.3f NO se encunetra en el arreglo\n\n", dato);
+    }
+
+    }
+
+
+    ///busqueda menor en arreglo INT
+
+    void funcionD (int a[], int v)
+    {
+        int menor;
+        menor= busqueda_menor_int(a, v); ///recibe arreglo y validos, retorna el menor elemento
+
+        printf("el dato menor es %d", menor);
+        printf("\n\n");
+    }
+
+    ///busqueda menor en arreglo FLOAT
+
+    void funcionE (float a[], int v)
+    {
+        float menor;
+        menor= busqueda_menor_float(a, v);
+
+        printf("el dato menor es %.3f", menor);
+        printf("\n\n");
+    }
+
+    ///muestra inserccion de dato en arreglo CHAR
+
+    int funcionF (char a[], int v, int dim) ///recibe arreglo char validos y la dimension
+    {
+        printf("que dato desea insertar en el arreglo ?\n\n"); ///muestra el arreglo para ver que dato desea insertar
+        muestra_arreglo_char(a, v);
+
+        char dato;
+        printf("\n\ningrese el dato a insertar: "); ///pide el dato que desea insertar en el arreglo
+        fflush(stdin);
+        scanf("%c", &dato);
+
+        v = inserta_letra_arreglo_ordenado(a, v, dim, dato);
+
+        return v; ///retorna los validos asi el arreglo queda cargado
+    }
+
+    ///busqueda maximo en arreglo CHAR
+
+    void funcionG (char a[], int v)
+    {
+        char mayor;
+        mayor= busqueda_mayor_char(a, v); ///mayor recibe el carcter mas grande
+
+        printf("el dato maximo es %c", mayor);
+        printf("\n\n");
+    }
+
+    ///muestra verificacion si es caoicua o no
+
+    void funcionH (int a[], int v)
+    {
+        int verdadero;
+
+        verdadero = capicua_V_F(a, v);
+
+        if (verdadero==1){
+            printf("\nel arreglo es capicua\n\n");
+        } else {
+            printf("\nel arreglo NO es capicua\n\n");
+        }
+
+    }
+
+    ///muestra invierte un arreglo INT
+
+    void funcionI (int a[], int v)
+    {
+        invierte_arreglo_int(a, v);
+        printf("el arreglo a sido invertido:\n\n ");
+        muestra_arreglo(a, v);
+        printf("\n\n");
+    }
+
+    ///muestra invierte un arreglo FLOAT
+
+    void funcionJ(float a[], int v)
+    {
+        invierte_arreglo_float(a, v);
+        printf("el arreglo a sido invertido:\n\n ");
+        muestra_arreglo_float(a, v);
+        printf("\n\n");
+    }
+
+    ///muestra invierte un arreglo CHAR
+
+    void funcionK (char a[], int v)
+    {
+        invierte_arreglo_char(a, v);
+        printf("el arreglo a sido invertido:\n\n ");
+        muestra_arreglo_char(a, v);
+        printf("\n\n");
+    }
+
+    ///muestra carga arreglo CHAR
+
+int funcionM (char a[], int v, int dim) ///recibe arreglo char validos y dimension
+{
+    v = carga_arreglo_char(a, v, dim);
+    printf("\n\n");
+
+    return v;
+}
+
+    ///muestra arreglo char
+
+void funcionN (char a[], int v)
+{
+    printf("este es el arreglo char ABC:\n");
+    muestra_arreglo_char(a, v);
+    printf("\n\n");
+
+}
+
+///muestra ejercicio intercalado
+
+int funcionO (char a[], int vA, char b[], int vB, char c[], int vC, int dim)
+{
+    vC = mezcla_arreglo_char(a, vA,  b, vB,  c, vC, dim );
+    return vC;
+}
+
+///muestra ejercicio 12
+
+void muestra_ejercicio_12 (char a[], int v)
+{
+    printf("este es el arreglo mezclado: ");
+    muestra_arreglo_char(a, v);
+    printf("\n\n");
+
+}
+
+
+
+
+/*************************************************
+********                                 *********
+****                                          ****
+* <<<<<<FUNCIONES PARA EL TRABAJO PRACTICO>>>>>  *
+****                                          ****
+********                                  ********
+*************************************************/
+
+
+/// ejercicio 1
+///carga arreglo tipo int
+
+int carga_arreglo_int (int a[], int v, int dim) ///recibe arreglo validos y demsnion
+{
+    char opcion;
+
+    while (v<dim && opcion!=ESC){ ///carga arreglo hasta que presione ESC
+
+        system("cls");
+        printf("cargue arreglo INT: ");
+        scanf("%d", &a[v]);
+
+        printf("ESC para salir");
+        opcion=getch();
+        v++; /// va sumando uno a el subindice
+
+    }
+
+    return v;
+}
+
+///ejercicio 2
+///muestra arreglos int
+
+void muestra_arreglo (int a[], int v) ///recibe arreglo y validos
+{
+    for (int i=0; i<v; i++){ ///recorre el arreglo para mostrar todos sus elementos
+        printf("%d - ", a[i]);
+    }
+}
+
+///ejercicio 3
+///suma los elementos de un arreglo int
+
+int suma_arreglo (int a[], int v) ///recibe arreglo y validos
+{
+    int suma=0;
+    int i;
+    for (i=0; i<v; i++){ ///va sumando todos los elemetnos
+        suma+= a[i];
+    }
+
+    return suma; ///retorna la suma
+}
+
+///ejercicio 4
+/// arreglo a pila
+
+void arreglo_a_pila (int a[], int v, Pila *pila) ///recibe arreglo  validos y puntero de pila
+{
+    int i;
+
+    for (i=0; i<v; i++) ///va apilando cada elemento del arreglo en una pila
+    {
+        apilar(pila, a[i]);
+    }
+}
+
+///ejercicio 5
+///carga un arreglo tipo FLOAT
+
+float carga_arreglo_float (float a[], int v, int dim) ///recibe arreglo  validos y dimension
+{
+    char opcion;
+
+    while (v<dim && opcion!=ESC){
+
+        ///system("cls");
+        printf("\ncarga su arreglo FLOAT: ");
+        scanf("%f", &a[v]);
+
+        printf("ESC para dejar de cargar: ");
+        opcion=getch();
+        printf("\n");
+        v++;
+
+    }
+
+    return v;
+}
+
+///ejercicio 5
+///muestra arreglo de tipo FLOAT
+
+void muestra_arreglo_float (float a[], int v) ///recibe arreglo y validos
+{
+    int i;
+
+    for (i=0; i<v; i++){
+
+        printf("%.3f - ", a[i]);
+    }
+}
+
+///ejercicio 5
+///suma arreglo FLOAT
+
+float suma_arreglo_float (float a[], int v) ///recibe arreglo y validos
+{
+    float suma=0;
+    int i;
+    for (i=0; i<v; i++){ ///suma los datos del arreglo float
+        suma+= a[i];
+    }
+
+    return suma; ///retorna la suma
+}
+
+///ejercicio 6
+///carga arreglo CHAR
+
+int carga_arreglo_char (char a[], int v, int dim) ///recibe arreglo char  validos y simension
+{
+    char opcion;
+
+    while (v<dim && opcion!=ESC){
+
+        system("cls");
+        printf("carga arreglo CHAR: ");
+        scanf("%c", &a[v]);
+        fflush(stdin);
+
+        printf("ESC si desea salir: ");
+        opcion = getch();
+        v++;
+    }
+
+    return v;
+}
+
+///ejercicio 6
+///muestra arreglo CHAR
+
+void muestra_arreglo_char (char a[], int v) ///recibe arreglo y validos
+{
+    int i;
+    for (i=0; i<v; i++){
+        printf("%c - ", a[i]);
+    }
+}
+
+///ejercicio 6
+///busca un dato especifico en el arreglo CHAR
+///retorna V o F
+
+int busca_dato_en_arreglo_char (char a[], int v, char dato) ///recibe arreglo char y validos
+{                                                           /// y el daro a buscar
+    int flag=0; ///bandera, indica verdadero (1) o falso (0)
+    int i=0;
+    while (i<v && flag==0){ ///recorre el arreglo hasra encontrar el dato
+        if (a[i]==dato){ /// si hay un elemento igual al dato carga bandera con 1
+            flag=1;
+        }
+
+        i++;
+    }
+    return flag; ///retorna V o F
+}
+
+///busca un dato especifico en el arreglo INT
+///retorna V o F
+
+int busca_dato_en_arreglo_int (int a[], int v, int dato)
+{
+    int flag=0;
+    int i=0;
+
+    while (i<v && flag==0){
+        if (a[i]==dato){
+            flag = 1;
+        }
+        i++;
+    }
+    return flag;
+}
+
+///busca un dato especifico en el arreglo FLOAT
+///retorna V o F
+
+int busca_dato_en_arreglo_float (float a[], int v, float dato)
+{
+    int flag=0;
+    int i=0;
+
+    while (i<v && flag==0){
+        if (a[i]==dato){
+            flag = 1;
+        }
+        i++;
+    }
+    return flag;
+}
+
+
+///busqueda de MENOR INT
+
+int busqueda_menor_int (int a[], int v) ///recibe arreglo y validos
+{
+    int menor;
+    int i;
+    menor= a[0];
+
+    for (i=1; i<v; i++){ ///recorre arreglo hasta encontrar el menor
+        if (menor > a[i]){
+            menor= a[i];
+        }
+
+    }
+    return menor; ///retorna el menor
+}
+
+///busqueda de MENOR FLOAT
+
+float busqueda_menor_float (float a[], int v)
+{
+    float menor;
+    int i=0;
+    menor= a[i];
+
+    for (i=1; i<v; i++){
+        if (menor > a[i]){
+            menor= a[i];
+        }
+
+    }
+    return menor;
+}
+
+///ejercicio 7
+///inserta letra en arreglo ordenado alfabeticamente
+///el arreglo tiene que venir ya ordenado alfabeticamente
+
+int inserta_letra_arreglo_ordenado (char a[], int v, int dim, char dato) ///recibe arreglo
+{                                                            ///validos y elemento a insertar
+    int i;
+    i=v-1;
+
+    while (i>=0 && a[i]>dato){
+        a[i+1]=a[i]; ///va corriendo el elemento del arreglo para la posicion de adelantte
+        i--;
+    }
+
+    a[i+1]=dato;
+
+    return v; ///retorna los validos con el elemento cargado
+}
+
+
+///ejercicio 8
+///busqueda de MAYOR CHAR
+
+char busqueda_mayor_char (char a[], int v) ///recibe arreglo y validos
+{
+    char mayor;
+    int i;
+    mayor= a[0];
+
+    for (i=1; i<v; i++){
+        if (mayor < a[i]){
+            mayor= a[i];
+        }
+
+    }
+    return mayor; ///retorna el mayoelemento del arreglo
+}
+
+///ejercicio 9
+///determina si es capicua o no
+///retorna verdadero o falso
+
+int capicua_V_F (int a[], int v)
+{
+    int validos = v-1;
+    int flag = 0;
+    int p = 0; ///subindice de izquierda a derecha PRINCIPIO
+    int f = v-1; ///subindice del final FIN
+    int resto = v%2;
+
+    if (resto==0){
+        while ( p < validos/2 ){
+          if (a[p] == a[f]){
+            flag = 1;
+        }
+        p++;
+        f--;
+
+        }
+    } else {
+        while (p != validos){
+            if (a[p] == a[f]){
+                flag=1;
+
+
+            }
+            p++;
+            f++;
+        }
+    }
+
+    return flag;
+}
+
+///ejercicio 10
+///invierte elementos de un arreglo INT
+
+void invierte_arreglo_int (int a[], int v) ///recibe arreglo y validos
+{
+    int p = 0; ///variable contadora del principio del arreglo
+    int val = v-1; ///validos del arreglo menos 1
+    int aux; ///alameceno datos sacados del arreglo
+
+    while (p != val){
+
+        aux = a[val];
+        a[val] = a[p];
+        a[p] = aux;
+
+        p++;
+        val--;
+    }
+
+}
+
+///ejercicio 10
+///invierte elementos de un arreglo FLOAT
+
+void invierte_arreglo_float (float a[], int v) ///recibe arreglo y validos
+{
+    int p = 0; ///variable contadora del principio del arreglo
+    int val = v-1; ///validos del arreglo menos 1
+    float aux; ///alameceno datos sacados del arreglo
+
+    while (p != val){
+
+        aux = a[val];
+        a[val] = a[p];
+        a[p] = aux;
+
+        p++;
+        val--;
+    }
+
+}
+
+///ejercicio 10
+///invierte elementos de un arreglo CHAR
+
+void invierte_arreglo_char (char a[], int v) ///recibe arreglo y validos
+{
+    int p = 0; ///variable contadora del principio del arreglo
+    int val = v-1; ///validos del arreglo menos 1
+    int  aux; ///alameceno datos sacados del arreglo
+
+    while (p != val){
+
+        aux = a[val];
+        a[val] = a[p];
+        a[p] = aux;
+
+        p++;
+        val--;
+    }
+
+}
+
+///ejercicio 12
+///mezcla dos arreglos char de manera ORDENADA
+///recibe dos arreglos CHAR
+
+int mezcla_arreglo_char ( char a[], int vA, char b[], int vB, char c[], int vC, int dim)
+{
+    int iA= 0; ///validos del primer arreglo
+    int iB= 0; ///validos del segundo arreglo
+    int iC= 0;
+
+    while (iA<vA && iB<vB ){
+
+        if ( a[iA] < b[iB]){
+
+           c[iC]=  a[iA];
+           iA++;
+
+        } else {
+            c[iC] = b[iB];
+            iB++;
+        }
+        iC++;
+    }
+
+    return vC;;
+}
