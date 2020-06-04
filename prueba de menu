@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+void mustra_menu ();
+
+const char ESC=27;
+
+int main()
+{
+    char opcion1;
+
+    do{
+      system("cls");
+      mustra_menu ();
+      opcion1=getch();
+      system("cls");
+
+    switch (opcion1) {
+
+        case 49:
+            printf("\nhola master\n");
+            system("pause");
+            break;
+        case 50:
+            printf("\nhola perro\n");
+            system("pause");
+            break;
+        case 51:
+            printf("\nhola animal \n");
+            system("pause");
+            break;
+
+      }
+
+
+
+    } while (opcion1!=ESC);
+
+    return 0;
+}
+
+///muestra el menu
+
+void mustra_menu ()
+{
+    printf("\t\t\t\t\n QUE FUNCION DESEA RELIZAR?");
+    printf("\n");
+    printf("\n");
+    printf("\n1= funcion 1: ");
+    printf("\n1= funcion 2: ");
+    printf("\n1= funcion 3: ");
+    printf("\n1= funcion 4: ");
+    printf("\n1= funcion 5: ");
+    printf("\n");
+    printf("\n");
+    printf("ingrese numero de funcion o ESC para salir: ");
+
+}
