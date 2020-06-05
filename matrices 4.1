@@ -1,0 +1,861 @@
+/**
+1. Hacer una función que reciba como parámetro una matriz de números enteros
+y permita que el usuario ingrese valores al mismo por teclado.
+La función debe cargar la matriz por completo.
+
+2. Hacer una función que reciba como parámetro una matriz de números enteros
+y la muestre por pantalla (en formato matricial).
+
+3. Hacer una función que reciba como parámetro una matriz de números enteros
+y que cargue la misma con números aleatorios (sin intervención del usuario).
+La función debe cargar la matriz por completo
+
+4. Hacer una función tipo int que sume el contenido total de una matriz
+de números enteros.
+
+5. Hacer una función tipo float que calcule el promedio de una matriz de
+números enteros.
+
+6. Hacer una función que determine si un elemento se encuentra dentro de
+una matriz de números enteros. La función recibe la matriz y el dato a buscar.
+
+7. Hacer una función que cargue un arreglo de palabras (strings). La función
+debe retornar cuantas palabras se cargaron.
+
+8. Hacer una función que muestre un arreglo de palabras
+
+9. Hacer una función que determine si una palabra se encuentra dentro de un
+arreglo de  palabras. La función recibe el arreglo, la cantidad de palabras
+que contiene y la palabra a  buscar.
+
+10.Hacer una función (o varias) que ordene un arreglo de palabras por orden
+alfabético. (Por selección o inserción, el que más te guste)
+
+11.Hacer una función que retorne el determinante de una matriz de 2x2.
+
+12.Función que verifique si una matriz de 2x2 tiene inversa.
+
+13.Hacer una función que multiplique una matriz de 2x2 por una matriz de 2x5.
+
+14.Hacer una función que calcule la matriz inversa de una matriz de 2x2.
+
+
+*/
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <conio.h>
+#include <math.h>
+
+///PROTOTIPADOS
+void muestra_menu();
+void carga_matriz_rand_int(int filas, int columnas, int a[filas][columnas]);
+void muestra_matriz_int (int filas, int columnas, int a[filas][columnas]);
+void carga_matriz_intM (int filas, int columnas, int a[filas][columnas]);
+int suma_matriz_int(int filas, int columnas, int a[filas][columnas]);
+float promedio_matriz_int(int filas, int columnas, int a[filas][columnas]);
+int busca_elemento_matriz_int(int filas, int columnas, int a[filas][columnas], int dato);
+int carga_string(int palabras, int caracteres, int v, char a[][caracteres]);
+void muestra_string(int v, int dimPalabras, char a[][dimPalabras]);
+int ingresa_dato(char a[], int v, int dim);
+int busca_palabra_string(int v, int dimString, char matriz[][dimString], char b[]);
+int busca_menor_palabra(int validos, int dimString, char matriz[][dimString], int pos);
+void ordenamiento_string(int v, int dimString, char matriz[][dimString]);
+int determinante_2x2(int filas, int columnas, int matriz[filas][columnas]);
+int inversa_VoF(int filas, int columnas, int matriz[filas][columnas]);
+void multiplicacion_matriz_int(int filas1, int columnas1, int matrizA[filas1][columnas1], int filas2, int columnas2, int matrizB[filas2][columnas2], int filas3, int columnas3, int matrizC[filas3][columnas3]);
+void matriz_inversa2x2(int filas, int columnas, int matriz[filas][columnas], float inversa[filas][columnas]);
+int calcula_coefactores(int filas, int columnas, int matriz[filas][columnas], int arreglo[], int validos, int dim);
+void adjunta_traspuesta(int filas, int columnas, int matrizADJ[filas][columnas], int v, int arreglo[]);
+void ejercicio_15(int filas, int columnas, int matrix[filas][columnas]);
+int suma_votos(int filas, int columnas, int matrix[filas][columnas], int candidato);
+int porcentaje_votos(int v, int arreglo[], int vF, float arregloF[], int dimension, int votosTotal);
+void canidato_mas_votado(int v, float arreglo[]);
+void carga_matrix(int filas, int columnas, int matrix[filas][columnas]);
+
+
+///CONSTANTES
+const int FILAS = 5;
+const int COLUMNAS  = 5;
+const char ESC = 27;
+const int PALABRAS = 5;
+const int CARACTERES = 50;
+const int dim = 5;
+
+
+int main()
+{
+    ///variables normales
+
+    char opcion;
+
+    int suma;
+
+    float promedio;
+
+    int dato, busqueda;///dato contiene si se encontro un numero en una matriz o no
+
+    int dato2;///contiene si se encuentra una palabra en un string o no
+
+    int posicionMenor = 0;
+
+    int determinante2x2;
+
+    int dato3; ///contiene la verificacion de si una matriz tiene inversa o no
+
+    int i= 2;
+    int j= 1;
+    int caca = pow((-1), i+j);
+
+    ///matrices
+
+    int matrizINT[FILAS][COLUMNAS];
+    char matrizCHAR[PALABRAS][CARACTERES];
+    int vmatrizCHAR = 0;
+    int matriz2x2 [2][2];
+    int matriz2x5 [2][5];
+    int matrizMultiplicada[2][5];
+    float inversa2x2[2][2];
+    int laMatrix[FILAS][COLUMNAS];
+
+    ///arreglos
+    char palabra[dim];
+    int vpalabra = 0;
+
+    do
+    {
+
+        system("cls");
+        muestra_menu();
+        opcion = getch();
+        system("cls");
+
+        switch (opcion)
+        {
+
+        case 49:
+            carga_matriz_rand_int(FILAS, COLUMNAS, matrizINT);
+            printf("la matriz ya se ha cargado\n\n");
+            system("pause");
+            break;
+
+        case 50:
+            carga_matriz_intM(FILAS, COLUMNAS, matrizINT);
+            system("pause");
+            break;
+
+        case 51:
+            printf("ingrese numeros hasta que sea necesario...\n\n");
+            muestra_matriz_int(FILAS, COLUMNAS, matrizINT);
+
+            system("pause");
+            break;
+
+        case 52:
+            suma = suma_matriz_int(FILAS, COLUMNAS, matrizINT);
+            printf("esta es la suma total de la matriz: %d\n\n", suma);
+            system("pause");
+            break;
+
+        case 53:
+            promedio = promedio_matriz_int(FILAS, COLUMNAS, matrizINT);
+            printf("el promedio de esta matriz es: %.2f\n\n", promedio);
+            system("pause");
+            break;
+
+        case 54:
+            printf("ingrese el dato a buscar: ");
+            scanf("%d", &dato);
+
+            busqueda = busca_elemento_matriz_int(FILAS, COLUMNAS, matrizINT, dato);
+
+            if (busqueda == 1)
+            {
+                printf("\nel dato %d SE encuentra en la matriz\n", dato);
+            }
+            else
+            {
+                printf("\nel dato %d NO se encuentra en el arreglo\n", dato);
+            }
+            system("pause");
+            break;
+
+        case 55:
+            vmatrizCHAR = carga_string(PALABRAS, CARACTERES, vmatrizCHAR, matrizCHAR);
+            break;
+
+        case 56:
+            printf("\neste es el string\n\n");
+            muestra_string(vmatrizCHAR, CARACTERES, matrizCHAR);
+            system("pause");
+            break;
+
+        case 57:
+            vpalabra = ingresa_dato(palabra, vpalabra, dim);
+            dato2 = busca_palabra_string(vmatrizCHAR, CARACTERES, matrizCHAR, palabra );
+
+            if (dato2 == 1)
+            {
+                printf("\nla palabra %s SE encunetra en el string\n\n", palabra);
+            }
+            else
+            {
+                printf("\nla palabra %s NO se encuentra en el string\n\n", palabra);
+            }
+
+            system("pause");
+            break;
+
+        case 97:
+            ordenamiento_string(vmatrizCHAR, CARACTERES, matrizCHAR);
+            muestra_string(vmatrizCHAR, CARACTERES, matrizCHAR);
+            system("pause");
+            break;
+
+        case 98:
+            carga_matriz_intM(2, 2, matriz2x2);
+            determinante2x2 = determinante_2x2(2, 2, matriz2x2);
+            printf("este es el determinante %d\n\n", determinante2x2);
+            system("pause");
+            break;
+
+        case 99:
+            printf("carga una matriz para saber si tiene inversa o no\n\n");
+            carga_matriz_intM(2, 2, matriz2x2);
+            dato3 = inversa_VoF(2, 2, matriz2x2);
+
+            if (dato3 == 1)
+            {
+                printf("\nla Matriz tiene inversa\n\n");
+            }
+            else
+            {
+                printf("\nla Matriz NO tiene inversa\n\n");
+            }
+
+            system("pause");
+            break;
+
+        case 100:
+           carga_matriz_rand_int(2, 2, matriz2x2);
+           carga_matriz_rand_int(2, 5, matriz2x5);
+           printf("esta es la matriz A\n\n");
+           muestra_matriz_int(2, 2, matriz2x2);
+           printf("\n\nesta es la matriz B\n\n");
+           muestra_matriz_int(2, 5, matriz2x5);
+           printf("\n\nesta es la multiplicacion de las matrices anteriores\n\n");
+           multiplicacion_matriz_int(2, 2, matriz2x2, 2, 5, matriz2x5, 2, 5, matrizMultiplicada);
+           muestra_matriz_int(2, 5, matrizMultiplicada);
+
+           printf("\n\n");
+           system("pause");
+           break;
+
+        case 101:
+            carga_matriz_intM(2,2, matriz2x2);
+            muestra_matriz_int(2, 2, matriz2x2);
+            determinante2x2 = determinante_2x2(2, 2, matriz2x2);
+            if (determinante2x2 != 0)
+            {
+                matriz_inversa2x2(2, 2, matriz2x2, inversa2x2);
+                printf("\n\nesta es la matriz inversa:\n\n");
+                muestra_matriz_int(2, 2, inversa2x2);
+            }
+            system("pause");
+            break;
+        case 102:
+            ejercicio_15(FILAS, COLUMNAS, laMatrix);
+
+
+
+
+            printf("\n\n");
+            system("pause");
+            break;
+
+        }
+    }
+    while(opcion != ESC);
+
+    return 0;
+}
+
+void muestra_menu()
+{
+    printf("\t\t<<ELIGA ALGUNA OPCION>>");
+    printf("\n\n");
+    printf("1-Carga matriz random\n");
+    printf("2-Carga matriz por teclado\n");
+    printf("3-Muestra matriz int\n");
+    printf("4-Suma matriz int\n");
+    printf("5-Muestra promedio de una matriz int\n");
+    printf("6-Busca dato en matriz INT \n");
+    printf("7-Carga un string\n");
+    printf("8-Muestra un string\n");
+    printf("9-Busca palabra en arreglo de string\n");
+    printf("\n");
+    printf("<<ELIGA UNA LETRA>>");
+    printf("\n\n");
+    printf("A-Ordenaiento por seleccion\n");
+    printf("B-saca el determinante de una matriz 2x2\n");
+    printf("C-Verifica si una matriz 2x2 tiene inversa \n");
+    printf("D-Multiplica una matriz 2x2 con otra 2x5 cargadas random \n");
+    printf("E-Calcula la inversa de una matriz 2x2\n");
+    printf("F-Resultados de las ultimas elecciones\n");
+    printf("\n\n");
+    printf("ingrese ESC si desea salir: ");
+
+}
+
+
+
+///EJERCICIO 3
+///cargamos una matriz int random
+
+void carga_matriz_rand_int(int filas, int columnas, int a[filas][columnas])///recibe filas, columnas y la matriz
+{
+   int f, c; ///F recorre las filas y C las columnas
+
+   for (f = 0; f<filas; f++)///recorre toda una fila hasta el paximo que es la constante FILAS
+   {
+       for (c = 0; c<columnas; c++)///carga cada columna hasta su numero asignado
+       {
+            a[f][c] = rand()%50;///carga numeros random desde el 0 hasta el 49
+       }
+   }
+}
+
+///EJERCICIO 1
+///carga una matriz por teclado
+
+void carga_matriz_intM (int filas, int columnas, int a[filas][columnas])
+{
+    int f, c;
+
+    for (f = 0; f<filas; f++)
+    {
+         for (c = 0; c<columnas; c++)
+         {
+             printf("ingrese un valor entero: ");
+             scanf("%d", &a[f][c]);
+             system("cls");
+         }
+    }
+}
+
+///EJERCICO 2
+///muestra una matriz de tipo int
+
+void muestra_matriz_int (int filas, int columnas, int a[filas][columnas])
+{
+    int f, c; ///F recorre las filas y C las columnas
+
+   for (f = 0; f<filas; f++)///recorre toda una fila hasta el paximo que es la constante FILAS
+   {
+       for (c = 0; c<columnas; c++)///muestra cada fila hasta su ultima columna
+       {
+            printf("-|%d|", a[f][c]);
+       }
+       printf("\n"); ///salta de linia en la ultima colmna y se muestra la siguiente linea
+   }
+}
+
+///EJERCICIO 4
+///suma una matriz de tipo int
+
+int suma_matriz_int(int filas, int columnas, int a[filas][columnas])
+{
+    int f, c, suma = 0;
+
+    for (f = 0; f<filas; f++)
+    {
+         for (c = 0; c<columnas; c++)
+         {
+           suma+= a[f][c]; ///se suman cada posicion de la matriz
+         }
+    }
+    return suma; ///retotna la suma de la matriz
+}
+
+///EJERCICIO 5
+///promedio de una matriz entera
+
+float promedio_matriz_int(int filas, int columnas, int a[filas][columnas])
+{
+    float promedio;
+    int suma;
+    int elementos;
+
+    suma = suma_matriz_int(filas, columnas, a); ///retorna la suma de la matriz
+    elementos = filas*columnas; ///elementos almacena la cantidad de datos cargados en la matriz
+
+    promedio = suma/elementos; ///divide la suma por la cantidad de datos
+    return promedio; ///retorna el promedio de la matriz
+}
+
+///EJERCICIO 6
+///busca elemento dentro de una matriz
+///retorna 1 si se encontro o 0 si no se encontro
+
+int busca_elemento_matriz_int(int filas, int columnas, int a[filas][columnas], int dato)///recibe el dato y la matriz
+{
+    int f, c;///variables para recorrer las matriz
+    int flag = 0;///bandera que retorna 0 falso o 1 verdaderro
+
+    for(f = 0; f<filas; f++)///re corre las filas
+    {
+        for(c = 0; c<columnas; c++)///recorre las columnas
+        {
+            if (dato == a[f][c])///si el dato se encuntra iguala flag a 1
+            {
+                flag = 1;
+            }
+        }
+
+    }
+
+    return flag; ///retorna flag
+}
+
+///EJERCICIO 7
+///carga string
+
+int carga_string(int palabras, int caracteres, int v, char a[][caracteres])
+{
+    int i = v; ///recibe los validos
+    char opcion;
+
+    do
+    {
+        printf("ingrese una palabra que tenga menos de 50 caracteres:\n");
+        gets(a[i]); ///carga la matriz con palabras se usa gets para poder usar mas de 1 palabra
+        i++;///se incrementa la matriz
+
+        printf("ingrese ESC si desea salir: ");
+        opcion = getch();
+        system("cls");
+
+    }while(i<palabras && opcion != ESC);///se carga hasta que se usen las palabras maximas o hasta
+                                        ///donde el usuario quiera
+    return i;
+}
+
+///EJERCICIO 8
+///muestra string
+
+void muestra_string(int v, int dimPalabras, char a[][dimPalabras])
+{
+
+    int i=0;
+
+    while (i<v)///se recorre hasta que no se encutren mas palabras
+    {
+        printf("%s \n", a[i]);///muestra cada palabra
+        i++;
+        printf("\n");
+    }
+}
+
+///cargo una palabra para la busqueda del ejercicio 9
+
+int ingresa_dato(char a[], int v, int dim)
+{
+
+    printf("ingrese la palabra a buscar: ");
+    gets(a);
+
+    return v;
+}
+
+///EJERCICIO 9
+///busca si se encunetra palabra en string
+
+///recibe los validos de la matriz, la dimension de caracteres, la matriz y un arrelo de string
+int busca_palabra_string(int v, int dimString, char matriz[][dimString], char b[])
+{
+    int flag = 0;///retorna 0 1
+    int res;///en esta variable se almacena lo que devuelve strcmpi
+    int i = 0; ///contador de la matriz
+
+    while (i<v && flag==0)///se recorre hasta que la matriz se termine o hasta que flag sea 1
+    {
+        res = strcmpi(matriz[i], b);///strcmpi almacena 0 en caso de que halla dos palabras iguales
+                                    ///
+        if (res==0)
+        {
+            flag = 1;
+        }
+        i++;
+    }
+
+    return flag;
+}
+
+///EJERCICIO 10
+///busca el menor elemento
+
+int busca_menor_palabra(int validos, int dimString, char matriz[][dimString], int pos)
+{
+    int posmenor = pos;///almacena la menor posicion
+    int i = pos + 1;///recorre desde la posicion 1
+    int res;///almacena el dato de que variable es menor
+
+    while (i<validos)
+    {
+        res = strcmpi(matriz[i], matriz[posmenor]);
+        if (res < 0)///res contiene el dato de que palabra es menor
+        {
+         posmenor = i;///iguala posmenor al subinidce donde esta el menor dato
+        }
+        i++;
+    }
+
+      return posmenor;///retorna el subindice donde esta el menor dato
+}
+
+
+///ordenamiento por selecion
+
+void ordenamiento_string(int v, int dimString, char matriz[][dimString])
+{
+    int posmenor;///almacena  la posicion menor
+    int i = 0;///variable  que recorre
+    char aux[10][50];///matriz de string axiliar
+    int vaux = 0;///validos de auxiliar
+
+    while (i<v)
+    {
+        posmenor = busca_menor_palabra(v, dimString, matriz, i);///llama a la funcion que retorna la menor pos
+
+        strcpy(&aux[0][0], matriz[posmenor]);///mueve la palabra menor a la matriz aux
+
+        strcpy(matriz[posmenor], matriz[i]);///mueve la palabra que esta en matriz[1] a donde estaba la menor palabra
+
+        strcpy(matriz[i], &aux[0][0]);///mueve la palabra menor a matriz[1].
+
+        i++;///incrementa i
+    }
+
+}
+
+///ejercicio 11
+///determinante de una matriz 2x2
+
+int determinante_2x2(int filas, int columnas, int matriz[filas][columnas])
+{
+    int determinante;
+
+    determinante = (matriz[0][0]*matriz[1][1]-(matriz[0][1]*matriz[1][0]));
+
+    return determinante;
+}
+
+///ejercicio 12
+///verifica si una matriz tiene inversa
+///retorna V o F
+
+int inversa_VoF(int filas, int columnas, int matriz[filas][columnas])
+{
+    int flag = 0;
+
+    int inversa = determinante_2x2(filas, columnas, matriz);
+
+    if (inversa != 0)
+    {
+        flag = 1;
+    }
+
+    return flag;
+}
+
+///ejercicio 13
+///multiplica dos matrices
+
+void multiplicacion_matriz_int(int filas1, int columnas1, int matrizA[filas1][columnas1], int filas2, int columnas2, int matrizB[filas2][columnas2], int filas3, int columnas3, int matrizC[filas3][columnas3])
+{
+    int f1;///filas de la matriz 1
+    int c1;///actua como columnas de la matriz A y como filas de la matriz B
+    int c2;///actua como filas de la matriz B
+
+    int suma;
+
+    for(c2 = 0; c2<columnas2; c2++)///recorre todas las columnas de la matriz B
+    {
+        for(f1 = 0; f1<filas1; f1++)///recorre las filas de la matrizA
+        {
+            suma = 0;///cada vez que multiplica otra posicion iguala suma a 0
+            for (c1 = 0; c1<columnas1; c1++)///recorre las columnas de la matriz A
+            {
+                suma+=matrizA[f1][c1]*matrizB[c1][c2];///en suma almacena la multiplicacion de cada posicion
+                ///correspondiente y la va sumando con el resto de las multiplicaciones
+            }
+
+        matrizC[f1][c2] = suma;///le a la matriz C el contenido de suma en su respectivo lugar
+
+        }
+    }
+
+}
+
+///ejercicio 14
+///calcula la inversa de una matriz 2x2
+
+void matriz_inversa2x2(int filas, int columnas, int matriz[filas][columnas], float inversa[filas][columnas])
+{
+    int f, c, determinante;///f recorre las filas, c las columnas, y determinante almaceno la determinante
+    int coefactores[4];///en este arreglo almaceno los cofactores de la matriz
+    int vcoefactores = 0;///validos del arreglo
+    int adjMT[2][2];///almacena la adjuna traspuesta de la matriz 2x2
+    float resultado = 0 ;///almacena los datos de la matriz inversa
+
+    determinante = determinante_2x2(filas, columnas, matriz);///llama a esta funcion para tener el determinante
+
+    ///esta devuelve un arreglo con los datos de los coefacotres
+    vcoefactores = calcula_coefactores(filas, columnas, matriz, coefactores, vcoefactores, 4);
+
+    adjunta_traspuesta(2, 2, adjMT, vcoefactores, coefactores);///adjunto y traspongo la matriz
+
+
+    for(f = 0; f<filas; f++)///recorro las filas de la matriz
+    {
+        resultado = 0;
+        for(c = 0; c<columnas; c++)///recorro las columnas de la matriz
+        {
+            int adjunta = adjMT[f][c];
+            resultado = (float) adjunta/determinante;///divido cada posicion por la determinante
+
+            inversa[f][c] = resultado;///cargo la inversa con los resultados
+        }
+
+    }
+
+
+
+}
+
+///calcula los coefactores
+
+int calcula_coefactores(int filas, int columnas, int matriz[filas][columnas], int arreglo[], int validos, int dim)
+{
+
+    arreglo[validos] = matriz[1][1];
+    validos++;
+
+    arreglo[validos] = matriz[1][0];
+    validos++;
+
+    arreglo[validos] = matriz[0][1];
+    validos++;
+
+    arreglo[validos] = matriz[0][0];
+    validos++;
+
+    return validos;
+}
+
+///calculo adjunta de la matriz normal
+
+void adjunta_traspuesta(int filas, int columnas, int matrizADJ[filas][columnas], int v, int arreglo[])
+{
+   int f, c, i = 0;
+   int elevado, exponente, resultado;
+   int aux[3];
+   int vaux = 0;
+
+   for(f = 0; f<filas; f++)
+   {
+       exponente = 0;
+       for(c = 0; c<columnas; c++)
+       {
+
+           exponente = f+c;
+           elevado = pow((-1), exponente);
+           resultado = elevado*arreglo[i];
+
+           matrizADJ[f][c] = resultado;
+           i++;
+       }
+
+   }
+
+   ///traspone la matriz
+   aux[2] = matrizADJ[0][1];
+
+   matrizADJ[0][1] = matrizADJ[1][0];
+
+   matrizADJ[1][0] = aux[2];
+
+
+}
+
+
+///ejercicio 15
+///recibe filas, columnas de la matrix
+
+void ejercicio_15(int filas, int columnas, int matrix[filas][columnas])
+{
+    int arregloAux[5];///en este arrglo almaceno los votos de cada uno de los candidatos esta en orden A, B, C, D
+    int vaux = 0;///validos del arreglo
+    int candidato;///contador para las columnas de los votos
+    int sumaVotos = 0;///almaceno la suma de los votos totales
+    float arregloPorcentaje[5];///en este arreglo almaceno el porcentaje de cada candidato
+    int vporcentaje = 0;///validos del arreglo de los porcentajes
+
+    carga_matrix(5, 5, matrix);///funcion que carga y muestra la matrix
+
+    printf("\n\n");
+    system("pause");
+    system("cls");
+
+
+    for(candidato = 1; candidato<columnas; candidato++)///ciclo para la suma de los votos, candidato contador
+    {                                                  ///para las colunas
+
+        int resultado;///almaceno los votos de cada candidato
+        resultado = suma_votos(filas, columnas, matrix, candidato);///esa funcion suma cada columna
+
+        arregloAux[vaux] = resultado;///luego paso los votos al arreglo
+        vaux++;///incremento el arreglo
+        resultado = 0;
+    }
+
+    sumaVotos = suma_matriz_int(filas, columnas, matrix);///sumo los votos en total
+
+    sumaVotos = sumaVotos-15;///le resto 15 que es la columna que me dice el districto
+
+    ///llamo a la funcion que me almcena el porcentaje en cada posicion del arreglo de porcentajes
+    vporcentaje = porcentaje_votos(vaux, arregloAux, vporcentaje, arregloPorcentaje, 5, sumaVotos);
+
+    ///muestro los votos de cada candidato
+    printf("\n<<VOTOS DE CADA CANDIDATO:>>\n\n");
+
+    printf("candidato A: %d\n", arregloAux[0]);
+    printf("candidato B: %d\n", arregloAux[1]);
+    printf("candidato C: %d\n", arregloAux[2]);
+    printf("candidato D: %d\n\n", arregloAux[3]);
+
+    ///muestro los votos en total
+    printf("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+    printf("\n<<<<<<<<VOTOS TOTALES: %d>>>>>>>>\n", sumaVotos);
+    printf("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
+
+    ///muestro los porcentajes de cada candidato
+    printf("\n<<PORCENTAJE DE CADA CANDIDATO:>>\n");
+    printf("porcentaje candidato A: %.3f\n", arregloPorcentaje[0]);
+    printf("porcentaje candidato B: %.3f\n", arregloPorcentaje[1]);
+    printf("porcentaje candidato C: %.3f\n", arregloPorcentaje[2]);
+    printf("porcentaje candidato D: %.3f\n", arregloPorcentaje[3]);
+
+    ///funcion que muestra el mas votado de todos los candidatos
+    candidato_mas_votado(vporcentaje, arregloPorcentaje);
+
+    system("pause");
+    system("cls");
+
+    ///candidatos que iran a segunda ronda
+    printf("\nLOS QUE IRAN A SEGUNDA RONDA SERAN:\n\n");
+    printf("candidato A con %d votos \n", arregloAux[0]);
+    printf("candidato B con %d votos \n", arregloAux[1]);
+}
+
+///carga la matrix
+
+void carga_matrix(int filas, int columnas, int matrix[filas][columnas])
+{
+    ///cargo la matrix
+    matrix[0][0] = 1;
+    matrix[0][1] = 194;
+    matrix[0][2] = 48;
+    matrix[0][3] = 206;
+    matrix[0][4] = 45;
+
+    matrix[1][0] = 2;
+    matrix[1][1] = 180;
+    matrix[1][2] = 20;
+    matrix[1][3] = 320;
+    matrix[1][4] = 16;
+
+    matrix[2][0] = 3;
+    matrix[2][1] = 221;
+    matrix[2][2] = 90;
+    matrix[2][3] = 140;
+    matrix[2][4] = 20;
+
+    matrix[3][0] = 4;
+    matrix[3][1] = 432;
+    matrix[3][2] = 51;
+    matrix[3][3] = 821;
+    matrix[3][4] = 14;
+
+    matrix[4][0] = 5;
+    matrix[4][1] = 820;
+    matrix[4][2] = 61;
+    matrix[4][3] = 946;
+    matrix[4][4] = 18;
+
+    ///muestro la matriz
+    printf("\n<<distrito>><<candidato A>><<candidato B>><<candidato C>><<candidato D\n");
+
+    for(int f = 0; f<filas; f++)
+    {
+        for(int c = 0; c<columnas; c++)
+        {
+            printf("<<<  %d  >>>  ", matrix[f][c]);
+        }
+        printf("\n\n");
+    }
+
+
+
+}
+
+///suma cantidad de votos
+int suma_votos(int filas, int columnas, int matrix[filas][columnas], int candidato)
+{
+    int f;
+
+    int suma = 0;
+
+    for(f = 0; f<filas; f++)///suma cada columna
+    {
+        suma+= matrix[f][candidato];
+
+    }
+
+
+    return suma;
+}
+
+///saco el porcentaje de los votos
+
+int porcentaje_votos(int v, int arreglo[], int vF, float arregloF[], int dimension, int votosTotal)
+{
+    int i, j = 0;
+    int multiplicacion;
+
+    for(i = 0; i<v; i++)
+    {
+        multiplicacion = arreglo[i]*100;///multiplico los votos de cada candidato por 100
+
+        arregloF[vF] = (float) multiplicacion/votosTotal;///divido los votos total por la multiplicacion anterior
+        vF++;
+    }
+
+    return vF;
+}
+
+///imprime por pantalla el candidato con mas votos
+
+void candidato_mas_votado(int v, float arreglo[])
+{
+    int i;
+
+    for(i = 0; i<v; i++)
+    {
+        if(arreglo[i]>50)
+        {
+            printf("\nel candidato C es el mas votado con %.3f porciento de los votos\n", arreglo[i]);
+        }
+
+    }
+}
