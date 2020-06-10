@@ -1,0 +1,409 @@
+/**
+1. Hacer una función que cargue un arreglo de alumnos, hasta que el usuario lo decida.
+
+2. Hacer una función que muestre un arreglo de alumnos por pantalla. Modularizar.
+
+3. Hacer una función que muestre por pantalla los datos de un alumno, conociendo su matrícula.
+Modularizar.
+
+4. Hacer una función que ordene el arreglo de alumnos por medio del método de selección. El
+criterio de ordenación es el número de matrícula.
+
+5. Hacer una función que muestre por pantalla los datos de los estudiantes de un género
+determinado (se envía por parámetro). Modularizar.
+
+6. Hacer una función que inserte en un arreglo ordenado por matrícula un nuevo dato,
+conservando el orden.
+
+7. Hacer una función que ordene el arreglo de alumnos por medio del método de inserción.
+El criterio de ordenación es el nombre.
+
+8. Hacer una función que cuente y retorne la cantidad de estudiantes de un género determinado
+(se envía por parámetro) que tiene un arreglo de alumnos.
+
+9. Hacer una función principal que pruebe el funcionamiento de todos los incisos anteriores,
+con un menú de opciones para poder ejecutar todas las funciones requeridas.
+Tengan presente la correcta declaración y el ámbito de variables.
+*/
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <strings.h>
+
+///estructura
+
+typedef struct
+{
+    int matricula;
+    char nombre[50];
+    char genero;
+
+}stAlumno;
+
+///prototipado
+void muestra_menu();
+stAlumno carga_un_alumno();
+void muestra_un_alumno(stAlumno a);
+int carga_alumnos (stAlumno a[], int dim);
+void muestra_alumnos (int v, stAlumno a[]);
+int busca_alumno_matricula(int v, stAlumno a[], int matricula);
+int busca_menor_matricula(int v, stAlumno a[], int pos);
+void ordenamiento_seleccion(int v, stAlumno a[]);
+int arreglo_de_generos(int vA, stAlumno a[], stAlumno b[], char dato);
+int inserta_alumno(int v ,stAlumno a[], stAlumno alumno, int dim);
+void inserta_alumno_char(int v ,stAlumno a[], stAlumno alumno, int dim);
+void ordenamiento_inserccion(int v, stAlumno a[], int dim);
+int cantidad_alumnos_porGenero(int v, stAlumno a[], char dato);
+
+
+///constantes
+const int DIM = 20;
+const int ESC = 27;
+
+int main()
+{
+
+    ///variables
+    char opcion;
+    int matricula;
+    int encontrado = 0;
+    char genero;
+    stAlumno alumno;
+    int cantidadGenero = 0;
+
+    ///arreglos
+    stAlumno alumnos[DIM];
+    int vAlumnos = 0;
+    stAlumno generos[DIM];
+    int vgeneros = 0;
+
+
+    do
+    {
+       system("cls");
+       muestra_menu();
+       opcion = getch();
+       system("cls");
+
+        switch(opcion)
+        {
+        case 49:
+            vAlumnos = carga_alumnos(alumnos, DIM);
+            break;
+
+        case 50:
+            muestra_alumnos(vAlumnos, alumnos);
+            printf("\n\n");
+            system("pause");
+            break;
+
+        case 51:
+            printf("Ingrese la matricula del alumno que busca: ");
+            scanf("%d", &matricula);
+            encontrado = busca_alumno_matricula(vAlumnos, alumnos, matricula);
+
+            if(encontrado != 0)
+            {
+                printf("\nEste es el alumno que busca:\n\n");
+                printf("---------------------------------\n");
+                muestra_un_alumno(alumnos[encontrado]);
+            }
+            else
+            {
+                printf("\nEl alumno no se encontra\n");
+            }
+
+
+            system("pause");
+            break;
+
+        case 52:
+            ordenamiento_seleccion(vAlumnos, alumnos);
+            muestra_alumnos(vAlumnos, alumnos);
+
+            system("pause");
+            break;
+
+        case 53:
+            printf("ingrese el genero de los alumnos a buscar F/M: ");
+            fflush(stdin);
+            scanf("%c", &genero);
+            vgeneros = arreglo_de_generos(vAlumnos, alumnos, generos, genero);
+            muestra_alumnos(vgeneros, generos);
+            system("pause");
+            break;
+
+        case 54:
+            printf("Ingrese los datos del alumno: \n\n");
+            alumno = carga_un_alumno();
+            vAlumnos = inserta_alumno(vAlumnos, alumnos, alumno, DIM);
+            muestra_alumnos(vAlumnos, alumnos);
+
+            system("pause");
+            break;
+
+        case 55:
+            ordenamiento_inserccion(vAlumnos, alumnos, DIM);
+
+            printf("Esta es la lista ordenanda:\n\n");
+            muestra_alumnos(vAlumnos, alumnos);
+
+            system("pause");
+            break;
+
+        case 56:
+            printf("ingrese el sexo para determinar la cantidad de estudiantes F/M: ");
+            fflush(stdin);
+            scanf("%c", &genero);
+            cantidadGenero = cantidad_alumnos_porGenero(vAlumnos, alumnos, genero);
+            printf("esta es la cantidad de alumnos de el genero que escogio: %d\n\n", cantidadGenero);
+
+            system("pause");
+            break;
+        }
+
+
+
+    }while(opcion != ESC);
+
+
+    return 0;
+}
+
+void muestra_menu()
+{
+    printf("\t\t<<ELIGA UNA OPCION>>");
+    printf("\n\n");
+    printf("1-Carga planilla de alumnos\n");
+    printf("2-Muestra planilla de alumnos\n");
+    printf("3-Busca alumno y muestra por matricula\n");
+    printf("4-Ordena la planilla por matricula (selleccion)\n");
+    printf("5-Filtra por sexo a eleccion\n");
+    printf("6-Inserta datos en un arreglo ya creado (usas funcion 4)\n");
+    printf("7-Ordena la planilla por orden alfabetico (inserccion)\n");
+    printf("\n\n");
+    printf("Ingrese ESC si desea salir");
+}
+
+///carga un alumno a la estructura
+
+stAlumno carga_un_alumno()
+{
+    stAlumno a;
+
+    printf("Ingrese numero de matricula:.... ");
+    scanf("%d", &a.matricula);///registra la matricula del alumno
+
+    printf("ingrese el nombre:.............. ");
+    fflush(stdin);
+    gets(&a.nombre);///registra el nombre
+
+    printf("ingrese sexo F/M:................ ");
+    fflush(stdin);
+    scanf("%c", &a.genero);///registra el genero
+
+    return a;///retorna a de tipo stAlumno
+
+}
+
+///muestra un alumno
+
+void muestra_un_alumno(stAlumno a)
+{
+    printf("Matricula: %d\n", a.matricula);
+
+    printf("Nombre:    %s\n", a.nombre);
+
+    printf("Sexo:      %c\n", a.genero);
+    printf("---------------------------------\n");
+}
+
+
+///carga una plantilla de alummnos
+
+int carga_alumnos (stAlumno a[], int dim)
+{
+    int i = 0;///variable que recorre los subindices del arreglo
+    char opcion;///opcion de carga
+
+    while(i<dim && opcion != ESC)
+    {
+        a[i] = carga_un_alumno();///utiliza la funcion de carga un solo alumno
+        i++;///incrementa el subindice
+
+        printf("\n\nIngrese ESC si desea salir: \n");///con ESC deja de cargar
+        opcion = getch();
+        system("cls");
+    }
+
+    return i;///retorna los validos
+}
+
+///muestra las plantiilas de alumnos
+
+void muestra_alumnos (int v, stAlumno a[])
+{
+    int i;
+
+    printf("Esta es la planilla de alumnos....:\n");
+    printf("-----------------------------------\n");
+    for(i = 0; i<v; i++)
+    {
+        muestra_un_alumno(a[i]);
+    }
+
+}
+
+///busca alumno por matricula y lo muestra
+///recibe validos, un arreglo de tipo stalumno y el dato a buscar que seria la matricula
+int busca_alumno_matricula(int v, stAlumno a[], int dato)
+{
+     int i = 0;
+     int encontrado = 0;
+
+    while (i<v && encontrado == 0)///recorre el arreglo hasta que se cumplan esas condiciones
+    {
+        if( a[i].matricula == dato)///compara la matricula del arreglo con el daro recibido
+        {
+            encontrado = i;///si se cumple la condicion enocntrado toma la posicion de i
+                           ///que es donde esta el alumno con ese nro de matricula
+        }
+        i++;
+    }
+
+    return encontrado;///retorna la posicion donde se encuentra dicho alumno
+}
+
+
+///busca posicion de la menor matricula
+///recibe la posicion donde se empieza a recorrer el arreglo, los validos y un arreglo de alumnos
+int busca_menor_matricula(int v, stAlumno a[], int pos)
+{
+    int posmenor = pos;///toma como posicion menor el valor de pos
+    int i = pos+1;///al arreglo se empieza a recorrer una posicion mas adelante que posmenos
+
+    while(i<v)///se recorre todo el arreglo
+    {
+        if( a[i].matricula < a[posmenor].matricula)///compara el valor de i con el de posmenor
+        {
+            posmenor = i;///si es menor posmenor toma el valor de i
+        }
+        i++;
+    }
+
+    return posmenor;///retorna donde se encuentra la posicion menor
+}
+
+///ordenamiento por selleccion por matricula
+///recibe los validos y el array de alumnos
+void ordenamiento_seleccion(int v, stAlumno a[])
+{
+    stAlumno aux;///declara una variable auxiliar de tipo stalumno
+    int posmenor = 0;///recibe lo que retorna la busqueda de la posicion menor
+    int i = 0;
+
+    while(i<v)///recorre todo el arreglo
+    {
+        posmenor = busca_menor_matricula(v, a, i);///posmenor almacena lo que retorna la funcion aneterior
+
+        aux = a[posmenor];///se alamcena en aux todo los datos que tiene el arreglo en esa
+                          ///posicion
+
+        a[posmenor] = a[i];///los datos que estan en la posicion i pasan a la posicion posmenor
+
+        a[i] = aux;///ahora i contiene los datos menores por matricula del arreglo
+
+        i++;
+    }
+
+}
+
+int arreglo_de_generos(int vA, stAlumno a[], stAlumno b[], char dato)
+{
+    int vG = 0;///los validos del arreglo de genero
+    int i = 0;///variable que recorre el arreglo de alumnos
+
+    while(i<vA)///recorrre todo el arreglo
+    {
+        if( a[i].genero == dato )///evalua si el genero de esa posicion es igual al genero elegido
+        {
+            b[vG] = a[i];///si es el genero elegido crea una copia en el arreglo de generos
+            vG++;///increenta el arreglo de generos
+        }
+
+        i++;
+    }
+
+
+    return vG;///retorna los validos de genero
+}
+
+
+///inserta alumno en un arreglo ya  ordenado
+///recibe los validos el arreglo de alumnos el alumno a insertar  y la dimension
+int inserta_alumno(int v ,stAlumno a[], stAlumno alumno, int dim)
+{
+   int i = v-1;
+
+   while(i>=0 && a[i].matricula > alumno.matricula && v<dim)
+   {
+     a[i+1] = a[i];
+     i--;
+   }
+   a[i+1] = alumno;
+
+
+   return v+1;
+}
+
+///inserta alumno por comparacion de nombres
+///paso 1 para el ordenamiento por inserccion
+
+void inserta_alumno_char(int v ,stAlumno a[], stAlumno alumno, int dim)
+{
+   int i = v;
+
+   while(i>=0 && strcmpi( a[i].nombre, alumno.nombre ) && v<dim)
+   {
+     a[i+1] = a[i];
+     i--;
+   }
+   a[i+1] = alumno;
+
+}
+
+///ordenamiento por inserccion
+
+void ordenamiento_inserccion(int v, stAlumno a[], int dim)
+{
+    int i = 0;
+
+    while(i<v-1)
+    {
+        inserta_alumno_char(i, a, a[i+1], dim);
+
+        i++;
+    }
+
+}
+
+///retorna la cantidad de alumnos que hay de un genero en especifico
+
+int cantidad_alumnos_porGenero(int v, stAlumno a[], char dato)
+{
+    int cant = 0;
+    int i = 0;
+
+    while(i<v)
+    {
+        if( a[i].genero == dato )
+        {
+            cant++;
+        }
+
+        i++;
+    }
+
+
+    return cant;
+}
