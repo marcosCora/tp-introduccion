@@ -1,0 +1,342 @@
+/**
+1. Crear una función que los cargue, hasta que el usuario lo decida.
+
+2. Crear una función que busque dentro del arreglo de legajos y retorne la posición
+de un determinado valor.
+
+3. Hacer una función que reciba como parámetro todos los arreglos y encuentre el nombre
+correspondiente a un determinado legajo y lo imprima por pantalla. Se debe invocar la función 2.
+
+4. Hacer una función que reciba como parámetro todos los arreglos y los ordene por nombre.
+(por el método de selección o inserción).
+
+Arreglos dinámicos​:
+
+5. Se cuenta con un arreglo de números enteros que ya fue cargado, se pide hacer una función
+que copie los datos de todos los valores del arreglo anterior ​que sean pares en otro arreglo
+del tamaño justo. Usar malloc dentro de la función y retornar el arreglo o usar dos parámetros
+de tipo arreglo y crear el arreglo dinámico antes de la invocación. Desarrolle las funciones que
+considere necesarias, por ejemplo, una fn que cuente la cantidad de elementos pares y otra
+para el traspaso de los elementos.
+
+6. Hacer una función que reciba un arreglo dinámico por parámetro, la cantidad de elementos
+válidos del mismo, y un valor que indique el nuevo tamaño que se le quiere dar a dicho arreglo.
+La función debe redimensionar el arreglo (usar la función realloc) y retornar el puntero a dicho
+espacio de memoria. ​Investigar el uso de la función realloc.
+
+
+*/
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <string.h>
+#include <stdlib.h>
+
+
+///prototipados
+
+void muestra_menu();
+int carga_alumnos(int chars, char nombres[][chars], int numuero_alumno[], int anio[], int dim);
+void muestra_plantilla_alumnos(int chars, char nombres[][chars], int numuero_alumno[], int anio[], int v);
+int busca_legajo(int v, int numero_alumno[]);
+void imprime_legajos_buscados(int chars, char nombres[][chars], int numero_alumno[], int anio[], int v);
+int busca_menor_string(int validos, int chars, char string1[][chars], int pos);
+void intercambio_string(int i, int chars, int string1[][chars], int posmenor);
+void intercambio_arreglo_int(int i, int arreglo[], int posmenor);
+void ordenamiento_seleccion(int chars, char nombres[][chars], int anio[], int numero[], int v);
+int carga_arreglo_rand(int v, int dim, int arreglo[]);
+int pares_arreglo(int v, int arreglo[]);
+
+
+///constantes
+const int ESC = 27;///de escape
+const int DIM = 15;///dimension de los arreglos
+const int max_chars = 30;///maximo de caracteres para el string
+
+
+
+int main()
+{
+    ///variables
+    char opcion;
+    ///arreglos
+    char nombres[DIM][max_chars];///almacena los nombres de los alumnos
+    int nro_alumno[DIM];///alamcena el numero de alumnos/legajos
+    int anio[DIM];///almacena el año que esta cursando
+    int vcantidad = 0;///alamcena los validos de cada arreglos paralelos
+    int enteros[DIM];
+    int venteros = 0;
+
+
+    do
+    {
+        system("cls");
+        muestra_menu();
+        opcion = getch();
+        system("cls");
+
+
+
+        switch(opcion)
+        {
+        case 49:
+            vcantidad = carga_alumnos(max_chars, nombres, nro_alumno, anio, DIM);
+            break;
+
+        case 50:
+            muestra_plantilla_alumnos(max_chars, nombres, nro_alumno, anio, vcantidad);
+            system("pause");
+            break;
+
+        case 51:
+            imprime_legajos_buscados(max_chars, nombres, nro_alumno, anio, vcantidad);
+            system("pause");
+            break;
+
+        case 52:
+            ordenamiento_seleccion(max_chars, nombres, anio, nro_alumno, vcantidad);
+            muestra_plantilla_alumnos(max_chars, nombres, nro_alumno, anio, vcantidad);
+
+            system("pause");
+            break;
+
+        case 53:
+            venteros = carga_arreglo_rand(venteros, DIM, enteros);
+            pares_arreglo(venteros, enteros);
+            system("pause");
+            break;
+
+        }
+
+
+
+
+
+    }while(opcion != ESC);
+
+
+
+
+    return 0;
+}
+
+void muestra_menu()
+{
+    printf("\t\t<<ELIGA ALGUNA OPCION>>");
+    printf("\n\n");
+    printf("1-Carga planilla de los alumnos \n");
+    printf("2-Muestra planilla de los alumnos \n");
+    printf("3-Busca alumno por legajo y lo imprime \n");
+    printf("4-Ordenamiento por seleccion \n");
+    printf("5-Carga arreglo rand de enteros y lo muestra\n");
+    printf("\n\n");
+    printf("ingrese ESC si desea salir: ");
+
+}
+
+///carga el arreglo paralelo
+///recibe matriz de nombres, arreglos del numero de estudiante y el año que esta curasndo
+
+int carga_alumnos(int chars, char nombres[][chars], int numuero_alumno[], int anio[], int dim)
+{
+    int v = 0;
+    char opcion;
+
+    printf("ingrese los datos que se piden:\n");
+
+    do
+    {
+
+        printf("\ningrese el apellido o nombre del alumno: ");
+        ///gets(nombres[v]);
+        fflush(stdin);
+        scanf("%s", &nombres[v]);
+
+        printf("\ningrese su numero de alumno: ");
+        scanf("%d", &numuero_alumno[v]);
+
+        printf("\ningrese el a%co que esta cursando: ", 164);
+        scanf("%d", &anio[v]);
+        v++;
+
+        printf("\ningrese ESC si no desea cargar mas: ");
+        opcion = getch();
+        system("cls");
+
+
+    } while(v<dim && opcion != ESC);
+
+
+    return v;
+}
+
+///muestras los arreglos cargados anteriormente
+
+void muestra_plantilla_alumnos(int chars, char nombres[][chars], int numuero_alumno[], int anio[], int v)
+{
+    int i;
+
+    printf("estos son los datosd de los alumnos:\n");
+    printf("\n||||||||||||||||||||||||||||||||||||||\n\n");
+
+    for(i = 0; i<v; i++)
+    {
+        printf("NOMBRE:           %s\n", nombres[i]);
+        printf("NUMERO DE ALUMNO: %d\n", numuero_alumno[i]);
+        printf("ANIO:             %d\n", anio[i]);
+        printf("\n||||||||||||||||||||||||||||||||||||||\n\n");
+
+    }
+
+}
+
+///ejercicio 2
+///busco un numero de legajo en especifico
+
+int busca_legajo(int v, int numero_alumno[])
+{
+    int i = 0;
+    int dato = 0;
+    int encontrado = 0;
+    printf("\nIngrese el numero de legajo: ");
+    scanf("%d", &dato);
+
+    while(i<v && encontrado == 0)
+    {
+
+        if(numero_alumno[i] == dato)
+        {
+            encontrado = i;
+        }
+        i++;
+    }
+
+    return encontrado;
+}
+
+///ejercicio 3
+///busca legajo en especial e imprime los datos
+
+void imprime_legajos_buscados(int chars, char nombres[][chars], int numero_alumno[], int anio[], int v)
+{
+    int encontrado;
+
+    encontrado = busca_legajo(&v, numero_alumno);
+
+    if(encontrado != 0)
+    {
+        printf("\nEsta es la persona que ustdes busca:\n\n");
+        printf("NOMBRE:           %s\n", nombres[encontrado]);
+        printf("NUMERO DE ALUMNO: %d\n", numero_alumno[encontrado]);
+        printf("ANIO:             %d\n", anio[encontrado]);
+    }
+    else
+    {
+        printf("\nLa persona que ustdes busca no se encontra en la planilla\n");
+    }
+
+}
+
+///ejercicio 4
+///ordeno por seleccion los arreglos paralelos partiendo de los nombres
+
+void ordenamiento_seleccion(int chars, char nombres[][chars], int anio[], int numero[], int v)
+{
+    int i = 0;
+    int posmenor;
+    char aux1[10][20];
+    int vaux1 = 0;
+    int aux2[10];
+    int vaux2 = 0;
+
+    while(i<v)
+    {
+        posmenor = busca_menor_string(v, chars, nombres, i);
+
+        strcpy(&aux1[0][0], nombres[posmenor]);
+
+        strcpy(nombres[posmenor], nombres[i]);
+
+        strcpy(nombres[i], &aux1[0][0]);
+
+
+        aux2[0] = anio[posmenor];
+
+        anio[posmenor] = anio[i];
+
+        anio[i] = aux2[0];
+
+        aux2[0] = numero[posmenor];
+
+        numero[posmenor] = numero[i];
+
+        numero[i] = aux2[0];
+
+        i++;
+    }
+
+
+}
+
+///busca menor palabra y retorna su posicion
+
+int busca_menor_string(int validos, int chars, char string1[][chars], int pos)
+{
+    int posmenor = pos;
+    int i = pos+1;
+    int resultado;
+
+    while(i<validos)
+    {
+        resultado = strcmpi(string1[i], string1[posmenor]);
+        if(resultado < 0)
+        {
+            posmenor = i;
+        }
+        i++;
+    }
+
+    return posmenor;
+}
+
+///ejercicio 5
+///cargo arreglos de entero rand y muestra
+
+int carga_arreglo_rand(int v, int dim, int arreglo[])
+{
+    int i = 0;
+
+    for(v = 0; v<dim; v++)
+    {
+        arreglo[v] = rand()%30;
+    }
+
+    for(i = 0; i<v; i++)
+    {
+        printf("-|%d| ", arreglo[i]);
+    }
+    printf("\n\n");
+    return v;
+}
+
+///retorna la cantidad de elementos pares
+
+int pares_arreglo(int v, int arreglo[])
+{
+    int i, cont = 0;
+
+    for(i = 0; i<v; i++)
+    {
+        if(arreglo[i]%2 == 0)
+        {
+            cont++;
+        }
+    }
+
+
+
+
+    return cont;
+}
