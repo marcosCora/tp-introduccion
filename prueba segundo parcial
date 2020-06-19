@@ -1,0 +1,401 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <string.h>
+
+///estructura
+
+typedef struct
+{
+    int id;
+    char nombre[30];
+    char apellido[30];
+    int dni;
+    int nota;
+
+}stAlumno;
+
+///prototipados
+
+void mustra_menu ();
+int buscaDni(int dni);
+void guardaAlumnoArchivo(stAlumno a);
+stAlumno cargaUnAlumno();
+int validoId();
+void cargaAlumnos();
+void muestraUnAlumno(stAlumno a);
+void muestraArch(char archivo[]);
+int ArchivoAArrglo(stAlumno arreglo[], int dim);
+void muestraArreglo(int v, stAlumno a[]);
+int cuentaAlumnos(char archivo[]);
+void archAprobadosDesaprobados(int v, stAlumno a[], int aprobacion);
+float porcentajeDeAprobados();
+float porcentajeDeDesaprobados();
+
+
+///constates
+const char ESC=27;
+const char DIM = 30;
+const char *AR_ALUMNOS = "archivoAlumnos.dat";
+const char *AR_APROBADOS = "archivoAprobados.dat";
+const char *AR_DESAPROBADOS = "archivoDesaprobados.dat";
+
+
+int main()
+{
+    char opcion1;
+    stAlumno alumnos[DIM];
+    int valumnos = 0;
+    int cantAlumnos = 0;
+    int aprobacion = 0;
+    float porcentajeAprobado = 0;
+    float porcentajeDesaprobados = 0;
+
+    do{
+      system("cls");
+      mustra_menu ();
+      opcion1=getch();
+      system("cls");
+
+    switch (opcion1) {
+
+        case 49:
+            cargaAlumnos();
+            break;
+
+        case 50:
+            muestraArch(AR_ALUMNOS);
+            printf("\n\n");
+            system("pause");
+            break;
+
+        case 51:
+            valumnos = ArchivoAArrglo(alumnos, DIM);
+            printf("\nEste es el arreglo con los alumnos:\n");
+            muestraArreglo(valumnos, alumnos);
+            printf("\n\n");
+            system("pause");
+            break;
+
+        case 52:
+
+            cantAlumnos = cuentaAlumnos(AR_ALUMNOS);
+            printf("Hay %d alumnos en el arhivo\n\n", cantAlumnos);
+
+            system("pause");
+            break;
+
+        case 53:
+            printf("Ingrese la nota de aprobacion: ");
+            scanf("%d", &aprobacion);
+            archAprobadosDesaprobados(valumnos, alumnos, aprobacion);
+            printf("\nYa se cargaron los archivos correspondintes...\n");
+
+            system("pause");
+            break;
+
+        case 54:
+            printf("Estos son los alumnos aprobados: \n\n");
+            muestraArch(AR_APROBADOS);
+            printf("\n\n");
+            system("pause");
+            break;
+
+        case 55:
+            printf("Estos son los alumnos desaprobados: \n\n");
+            muestraArch(AR_DESAPROBADOS);
+            printf("\n\n");
+            system("pause");
+            break;
+
+        case 56:
+            porcentajeAprobado = porcentajeDeAprobados();
+            printf("Hay un %.2f porciento de aprobados\n\n", porcentajeAprobado);
+
+            system("pause");
+            break;
+
+        case 57:
+            porcentajeDesaprobados = porcentajeDeDesaprobados();
+            printf("Hay un %.2f porciento de desaprobados\n\n", porcentajeDesaprobados);
+
+            system("pause");
+            break;
+
+
+      }
+
+
+
+    } while (opcion1!=ESC);
+
+    return 0;
+}
+
+///muestra el menu
+
+void mustra_menu ()
+{
+    printf("\t\t<<QUE FUNCION DESEA RELIZAR?>>");
+    printf("\n\n");
+    printf("1-Carga lista de alumnos\n");
+    printf("2-Muestra planilla de  alumnos\n");
+    printf("3-Pasa de archivo a arreglo y lo muestra \n");
+    printf("4-Muestra la cantidad de alumnos que hay en un archivo\n");
+    printf("5-Pasa del arreglo(funcion 3) al archivo los aprobados correpondiente y los desaprobados\n");
+    printf("6-Muestra archivo de aprobados\n");
+    printf("7-Muestra archivo de desaprobados\n");
+    printf("8-Porcentaje de aprobados\n");
+    printf("9-Porcentaje de desaprobados\n");
+    printf("\n\n");
+    printf("ingrese numero de funcion o ESC para salir: ");
+
+}
+
+///ejercicio 1
+///verifico si existe un dato en un archivo buscando por dni
+
+int buscaDni(int dni)
+{
+    stAlumno a;
+    int flag = 0;
+
+    FILE *pArchAlumno = fopen(AR_ALUMNOS, "rb");
+
+    if(pArchAlumno)
+    {
+        while(flag == 0 && fread(&a, sizeof(stAlumno), 1, pArchAlumno) > 0)
+        {
+            if(a.dni == dni)
+            {
+                flag = 1;
+            }
+        }
+        fclose(pArchAlumno);
+    }
+
+    return flag;///si retorna 0 no existe ningun dni si retorna 1 es que existe
+}
+
+///ejercicio 2
+///carga UN alumno
+
+stAlumno cargaUnAlumno()
+{
+    stAlumno a;
+    int flagDni = 0;
+
+    printf("Ingrese su nombre.........: ");
+    fflush(stdin);
+    gets(a.nombre);
+
+    printf("Ingrese su apellido.......: ");
+    fflush(stdin);
+    gets(a.apellido);
+
+    do
+    {
+        printf("Ingrese su DNI............: ");
+        scanf("%d", &a.dni);
+        flagDni = buscaDni(a.dni);
+    }
+    while(flagDni == 1);
+
+    do
+    {
+        printf("Ingrese sus nota..........: ");
+        scanf("%d", &a.nota);
+    }
+    while(a.nota <= 1 || a.nota > 10);
+
+    return a;
+}
+
+///valido id
+
+int validoId()
+{
+    int id = 0;
+    stAlumno a;
+
+    FILE *pArchAlumno = fopen(AR_ALUMNOS, "rb");
+    if(pArchAlumno)
+    {
+        fseek(pArchAlumno, sizeof(stAlumno)*(-1), SEEK_END);
+        if(fread(&a, sizeof(stAlumno), 1, pArchAlumno) > 0)
+        {
+            id = a.id;
+        }
+       fclose(pArchAlumno);
+    }
+
+    return id;
+}
+
+///guardo alumno en archivi
+
+void guardaAlumnoArchivo(stAlumno a)
+{
+    FILE *pArchAlumno = fopen(AR_ALUMNOS, "ab");
+    if(pArchAlumno)
+    {
+        fwrite(&a, sizeof(stAlumno), 1, pArchAlumno);
+        fclose(pArchAlumno);
+    }
+}
+
+///carga lista de alumnos
+
+void cargaAlumnos()
+{
+    char opcion;
+    stAlumno a;
+
+    while(opcion != ESC)
+    {
+        printf("Cargando alumnos...\n\n");
+
+        a = cargaUnAlumno();
+        a.id = validoId()+1;
+        guardaAlumnoArchivo(a);
+
+        printf("ESC si desea salir...");
+        opcion = getch();
+        system("cls");
+    }
+}
+
+///ejercicio 2
+///muestra un alumno
+
+void muestraUnAlumno(stAlumno a)
+{
+    printf("\nNombre.............: %s \n", a.nombre);
+    printf("Apellido...........: %s \n", a.apellido);
+    printf("DNI................: %d \n", a.dni);
+    printf("Nota...............: %d \n", a.nota);
+    printf("-------------------------------------");
+}
+
+///muestra plantiila de  alumnos
+
+void muestraArch(char archivo[])
+{
+    stAlumno a;
+    FILE *pArchAlumno = fopen(archivo, "rb");
+    if(pArchAlumno)
+    {
+        while(fread(&a, sizeof(stAlumno), 1, pArchAlumno) > 0)
+        {
+            muestraUnAlumno(a);
+        }
+        fclose(pArchAlumno);
+    }
+}
+
+///ejercicio 4
+///archivo a arreglo
+
+int ArchivoAArrglo(stAlumno arreglo[], int dim)
+{
+    stAlumno a;
+    int v = 0;
+
+    FILE *pArchAlumnos = fopen(AR_ALUMNOS, "rb");
+    if(pArchAlumnos)
+    {
+        while(v<dim && fread(&a, sizeof(stAlumno), 1 , pArchAlumnos) > 0)
+        {
+            arreglo[v] = a;
+            v++;
+        }
+        fclose(pArchAlumnos);
+    }
+
+    return v;
+}
+ ///muestra arreglo de alumnos
+
+ void muestraArreglo(int v, stAlumno a[])
+ {
+     int i;
+
+     for(i = 0; i<v; i++)
+     {
+         muestraUnAlumno(a[i]);
+     }
+ }
+
+///ejercicio 5
+///cuenta los alumnos cargados en un archivo
+
+int cuentaAlumnos(char archivo[])
+{
+    int cont = 0;
+    stAlumno a;
+    FILE *pArchAlumno = fopen(archivo, "rb");
+    if(pArchAlumno)
+    {
+        fseek(pArchAlumno, 0, SEEK_END);
+        cont = ftell(pArchAlumno)/sizeof(stAlumno);
+        fclose(pArchAlumno);
+    }
+    return cont;
+}
+
+///ejercicio 6
+///pasa los aprobados al archivo de aprobados  y los desaprobados al archivo de desaprobados
+
+void archAprobadosDesaprobados(int v, stAlumno a[], int aprobacion)
+{
+    FILE *pArchAprobados = fopen(AR_APROBADOS, "ab");
+    FILE *pArchDesaprobados = fopen(AR_DESAPROBADOS, "ab");
+
+    if(pArchAprobados && pArchDesaprobados)
+    {
+        for(int i = 0; i<v; i++)
+        {
+            if(a[i].nota >= aprobacion)
+            {
+                fwrite(&a[i], sizeof(stAlumno), 1, pArchAprobados);
+            }
+            else
+            {
+                fwrite(&a[i], sizeof(stAlumno), 1, pArchDesaprobados);
+            }
+        }
+        fclose(pArchAprobados);
+        fclose(pArchDesaprobados);
+    }
+
+}
+
+///ejercicio 7
+///calcula el porcentaje de alummnos aprobados
+
+float porcentajeDeAprobados()
+{
+    float porcentaje = 0;
+    int cantAlumnos = cuentaAlumnos(AR_ALUMNOS);
+    int cantAprobados = cuentaAlumnos(AR_APROBADOS);
+
+    porcentaje = (float) (cantAlumnos*100)/cantAprobados;
+
+    return porcentaje;
+}
+
+
+///calcula el porcentaje de alummnos desaprobados
+
+float porcentajeDeDesaprobados()
+{
+    float porcentaje = 0;
+    int cantAlumnos = cuentaAlumnos(AR_ALUMNOS);
+    int cantDesaprobados = cuentaAlumnos(AR_DESAPROBADOS);
+
+    porcentaje = (float) (cantAlumnos*100)/cantDesaprobados;
+
+    return porcentaje;
+}
+
+
