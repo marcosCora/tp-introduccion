@@ -1,0 +1,13 @@
+///funcion donde abre un archivo y guarda los clientes ordenados o no(elimina lo anterior)
+
+void arregloAArchivo(int v, stCliente c[])
+{
+    FILE *pArchCliente = fopen(AR_CLIENTE, "wb");///abro el archivo en modo wb para ingresar los nuevos datos ordenados
+
+    if(pArchCliente)///verifico que se abra bien
+    {
+       fwrite(c, sizeof(stCliente), v, pArchCliente);///se añade al archivo el contenido de c
+       fclose(pArchCliente);///cierro el archivo
+    }
+
+}
